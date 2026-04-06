@@ -10,7 +10,10 @@ module co.edu.uniquindio.eventmanager {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires static lombok;
 
     opens co.edu.uniquindio.eventmanager to javafx.fxml;
     exports co.edu.uniquindio.eventmanager;
+    exports co.edu.uniquindio.eventmanager.controller;
+    opens co.edu.uniquindio.eventmanager.controller to javafx.fxml;
 }

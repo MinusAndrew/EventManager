@@ -1,4 +1,4 @@
-package co.edu.uniquindio.eventmanager;
+package co.edu.uniquindio.eventmanager.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
