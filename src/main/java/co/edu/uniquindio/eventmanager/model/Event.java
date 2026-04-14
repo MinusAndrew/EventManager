@@ -3,10 +3,12 @@ package co.edu.uniquindio.eventmanager.model;
 import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@ToString
 @Getter
 public class Event {
     private String idEvent, name, description, city;
