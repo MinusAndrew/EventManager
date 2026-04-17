@@ -38,7 +38,7 @@ public class ZoneManager {
         }
     }
 
-    public void delete(Zone zone){
+    public void removeZone(Zone zone){
         if(listZones.remove(zone)){
             System.out.println("Successfully deleted");
         }
