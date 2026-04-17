@@ -14,7 +14,7 @@ public class ChairManager {
     public Chair read(String id){
         for(Chair chair : listChairs){
             if(chair.getIdChair().equals(id)){
-                System.out.println("Chair: "+id+" founded");
+                System.out.println("Chair: "+id+" found");
                 return chair;
             }
             else {
