@@ -6,7 +6,7 @@ import java.util.List;
 public class ZoneManager {
     private final List<Zone> listZones = new ArrayList<>();
 
-    public void create(Zone zone){
+    public void addZone(Zone zone){
         System.out.println("Successfully created");
         listZones.add(zone);
     }
