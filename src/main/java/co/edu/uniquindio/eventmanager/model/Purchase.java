@@ -1,14 +1,13 @@
 package co.edu.uniquindio.eventmanager.model;
-
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+@ToString
 @Getter
 @Setter
-public class Purchase {
+public class Purchase{
     String idPurchase;
     LocalDate dateCreated;
     double total;
@@ -18,9 +17,6 @@ public class Purchase {
 
     @Builder
     public Purchase(User theUser, double total, LocalDate dateCreated, String idPurchase, ArrayList<Ticket> ticketList) {
-        if (theUser == null){
-            throw new IllegalArgumentException("The user cannot be null");
-        }
         this.theUser = theUser;
         this.ticketList = ticketList;
         this.total = total;

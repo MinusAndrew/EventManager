@@ -2,7 +2,11 @@ package co.edu.uniquindio.eventmanager.model;
 
 import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@ToString
+@Setter
 @Getter
 public class Chair {
     private String idChair;

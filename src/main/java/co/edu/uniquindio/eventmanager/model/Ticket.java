@@ -2,7 +2,9 @@ package co.edu.uniquindio.eventmanager.model;
 
 import co.edu.uniquindio.eventmanager.model.Enums.TicketStatus;
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 @Getter
 public class Ticket {
     private String idTicket;

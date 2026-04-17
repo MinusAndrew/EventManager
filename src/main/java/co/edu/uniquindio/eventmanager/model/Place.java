@@ -1,7 +1,14 @@
 package co.edu.uniquindio.eventmanager.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.ArrayList;
 
+@ToString
+@Getter
+@Setter
 public class Place {
     private String idPlace, name, address;
 
@@ -15,6 +22,4 @@ public class Place {
         this.eventList = new ArrayList<>();
         this.theZone = theZone;
     }
-
-
 }

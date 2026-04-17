@@ -1,9 +1,15 @@
 package co.edu.uniquindio.eventmanager.model;
 
 import co.edu.uniquindio.eventmanager.model.Enums.PaymentType;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 
+@ToString
+@Getter
+@Setter
 public class User {
     private String id, fullName, email, phoneNumber;
     private ArrayList<Purchase> purchaseList;
