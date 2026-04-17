@@ -28,7 +28,7 @@ public class UserManager {
     /*
     Not sure about it, weird logic
      */
-    public void update(User userUpdate){
+    public void updateUser(User userUpdate){
         for(User user : listUsers) {
             if (user.getId().equals(userUpdate.getId())) {
                 if(userUpdate.getEmail() != null) {user.setEmail(userUpdate.getEmail());}
