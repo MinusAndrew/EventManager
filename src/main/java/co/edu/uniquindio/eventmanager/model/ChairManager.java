@@ -6,7 +6,7 @@ import java.util.List;
 public class ChairManager {
     private final List<Chair> listChairs = new ArrayList<>();
 
-    public void create(Chair chair){
+    public void addChair(Chair chair){
         System.out.println("Successfully created");
         listChairs.add(chair);
     }
