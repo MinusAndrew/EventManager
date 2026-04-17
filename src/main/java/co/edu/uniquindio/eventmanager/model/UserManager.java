@@ -7,7 +7,7 @@ public class UserManager {
 
     private final List<User> listUsers = new ArrayList<>();
 
-    public void create(User user){
+    public void addUser(User user){
         System.out.println("Successfully created");
         listUsers.add(user);
     }
