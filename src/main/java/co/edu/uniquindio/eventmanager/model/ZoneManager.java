@@ -27,7 +27,7 @@ public class ZoneManager {
     /*
     Not sure about it, weird logic
      */
-    public void update(Zone zoneUpdate){
+    public void updateZone(Zone zoneUpdate){
         for(Zone zone : listZones) {
             if(zone.getIdZone().equals(zoneUpdate.getIdZone())){
                 if(zoneUpdate.getName() != null){zone.setName(zoneUpdate.getName());}
