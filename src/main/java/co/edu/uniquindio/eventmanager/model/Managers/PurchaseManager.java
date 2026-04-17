@@ -1,5 +1,6 @@
-package co.edu.uniquindio.eventmanager.model;
+package co.edu.uniquindio.eventmanager.model.Managers;
 
+import co.edu.uniquindio.eventmanager.model.Purchase;
 import lombok.Getter;
 
 import java.util.ArrayList;
