@@ -1,4 +1,6 @@
-package co.edu.uniquindio.eventmanager.model;
+package co.edu.uniquindio.eventmanager.model.Managers;
+
+import co.edu.uniquindio.eventmanager.model.Place;
 
 import java.util.ArrayList;
 import java.util.List;
