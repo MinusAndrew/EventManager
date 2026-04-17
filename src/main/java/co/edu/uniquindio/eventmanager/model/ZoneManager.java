@@ -11,7 +11,7 @@ public class ZoneManager {
         listZones.add(zone);
     }
 
-    public Zone read(String id){
+    public Zone getZoneById(String id){
         for(Zone zone : listZones){
             if(zone.getIdZone().equals(id)){
                 System.out.println("Zone: "+id+" founded");
