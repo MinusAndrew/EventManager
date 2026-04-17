@@ -39,7 +39,7 @@ public class UserManager {
         }
     }
 
-    public void delete(User user){
+    public void removeUser(User user){
         if(listUsers.remove(user)){
             System.out.println("Successfully deleted");
         }
