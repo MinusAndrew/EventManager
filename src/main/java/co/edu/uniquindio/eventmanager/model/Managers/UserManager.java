@@ -1,5 +1,6 @@
 package co.edu.uniquindio.eventmanager.model.Managers;
 
+import co.edu.uniquindio.eventmanager.model.EventManager;
 import co.edu.uniquindio.eventmanager.model.User;
 
 import java.util.ArrayList;
@@ -7,15 +8,13 @@ import java.util.List;
 
 public class UserManager {
 
-    private final List<User> listUsers = new ArrayList<>();
-
-    public void addUser(User user){
+    public static void addUser(User user){
         System.out.println("Successfully created");
-        listUsers.add(user);
+        EventManager.getInstance().addUser(user);
     }
 
-    public User read(String id){
-        for(User user : listUsers){
+    public static User searchUserById(String id){
+        for(User user : EventManager.getInstance().getUserList()){
             if(user.getId().equals(id)){
                 System.out.println("User: "+id+" founded");
                 return user;
@@ -30,23 +29,36 @@ public class UserManager {
     /*
     Not sure about it, weird logic
      */
-    public void updateUser(User userUpdate){
-        for(User user : listUsers) {
+    public static void updateUser(User userUpdate){
+        for(User user : EventManager.getInstance().getUserList()) {
             if (user.getId().equals(userUpdate.getId())) {
-                if(userUpdate.getEmail() != null) {user.setEmail(userUpdate.getEmail());}
-                if(userUpdate.getPhoneNumber() != null) {user.setPhoneNumber(userUpdate.getPhoneNumber());}
-                if(userUpdate.getFullName() != null) {user.setFullName(userUpdate.getFullName());}
-                if(userUpdate.getEmail() != null){user.setPaymentType(userUpdate.getPaymentType());}
+                if(userUpdate.getEmail() != null) {
+                    user.setEmail(userUpdate.getEmail());
+                }
+                if(userUpdate.getPhoneNumber() != null) {
+                    user.setPhoneNumber(userUpdate.getPhoneNumber());
+                }
+                if(userUpdate.getFullName() != null) {
+                    user.setFullName(userUpdate.getFullName());
+                }
+                if(userUpdate.getEmail() != null){
+                    user.setPaymentType(userUpdate.getPaymentType());
+                }
+                System.out.println("User updated");
+                break;
             }
         }
     }
 
-    public void removeUser(User user){
-        if(listUsers.remove(user)){
+    public static void removeUser(User user){
+        if(searchUserById(user.getId()) != null){
             System.out.println("Successfully deleted");
-        }
-        else {
+            EventManager.getInstance().removeUser(user);
+        } else {
             System.out.println("Couldn't delete, user not found");
         }
+    }
+    public static ArrayList<User> listUsers(){
+        return EventManager.getInstance().getUserList();
     }
 }
