@@ -27,7 +27,7 @@ public class EventManager {
 
     public static EventManager getInstance(){
         if (instance == null){
-            return new EventManager("kys", "EventManagerPlus");
+            return new EventManager("TicketMaster", "EventManagerPlus");
         }
         return instance;
     }
