@@ -23,7 +23,7 @@ public class PurchaseManager {
                 return p;
             }
             else {
-                System.out.println("Purchase: "+id+" not founded");
+                System.out.println("Purchase: "+id+" not found");
             }
         }
         return null;
