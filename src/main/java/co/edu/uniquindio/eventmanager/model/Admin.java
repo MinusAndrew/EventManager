@@ -1,10 +1,9 @@
 package co.edu.uniquindio.eventmanager.model;
 
+import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
-import co.edu.uniquindio.eventmanager.model.Managers.PlaceManager;
-import co.edu.uniquindio.eventmanager.model.Managers.UserManager;
-import co.edu.uniquindio.eventmanager.model.Managers.ZoneManager;
+import co.edu.uniquindio.eventmanager.model.Managers.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -116,15 +115,28 @@ public class Admin extends User {
     public void updateZone(Zone zone, Place place){
         ZoneManager.updateZone(zone,place);
     }
+    public void enableChair(Chair chair){
+        ChairManager.enableChair(chair);
+    }
+    public void reserveChair(Chair chair){
+        ChairManager.reserveChair(chair);
+    }
+    public void blockChair(Chair chair){
+        ChairManager.blockChair(chair);
+    }
+
+    public void addPurchase(Purchase purchase){
+        PurchaseManager.addPurchase(purchase);
+    }
+    public void removePurchase(Purchase purchase){
+        PurchaseManager.removePurchase(purchase);
+    }
+    public Purchase searchPurchaseById(String id){
+        return PurchaseManager.searchPurchaseById(id);
+    }
+    public void updatePurchase(Purchase purchase){
+        PurchaseManager.updatePurchase(purchase);
+    }
 
 
-
-
-
-
-
-
-    /*
-    manageZone()
-     */
 }

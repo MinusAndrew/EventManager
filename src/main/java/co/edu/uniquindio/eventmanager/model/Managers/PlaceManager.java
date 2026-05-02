@@ -38,6 +38,7 @@ public class PlaceManager {
                     place.setZoneList(placeUpdate.getZoneList());}
                 if(placeUpdate.getEventList() != null){
                     place.setEventList(placeUpdate.getEventList());}
+                return;
             }
         }
     }

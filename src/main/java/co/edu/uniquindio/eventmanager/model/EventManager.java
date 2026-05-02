@@ -14,6 +14,7 @@ public class EventManager {
     private ArrayList<User> userList;
     private ArrayList<Event> eventList;
     private ArrayList<Place> placeList;
+    private ArrayList<Purchase> purchaseList;
 
     private EventManager(String id, String name) {
         this.id = id;
@@ -21,11 +22,12 @@ public class EventManager {
         this.userList = new ArrayList<>();
         this.eventList = new ArrayList<>();
         this.placeList = new ArrayList<>();
+        this.purchaseList = new ArrayList<>();
     }
 
     public static EventManager getInstance(){
         if (instance == null){
-            return new EventManager("727osu!Game", "EventManagerPlus");
+            return new EventManager("kys", "EventManagerPlus");
         }
         return instance;
     }
@@ -48,6 +50,13 @@ public class EventManager {
     }
     public void removePlace(Place p){
         placeList.remove(p);
+    }
+
+    public void addPurchase(Purchase p){
+        purchaseList.add(p);
+    }
+    public void removePurchase(Purchase p){
+        purchaseList.remove(p);
     }
 
 

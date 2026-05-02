@@ -38,6 +38,7 @@ public class ZoneManager {
                 */
                 place.removeZone(zone);
                 place.addZone(zoneUpdate);
+                return;
             }
         }
     }

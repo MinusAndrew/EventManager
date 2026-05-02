@@ -43,6 +43,7 @@ public class ChairManager {
             if(chairUpdate.getRow() != 0){chair.setRow(chairUpdate.getRow());}
             if(chairUpdate.getNumber() != 0){chair.setNumber(chairUpdate.getNumber());}
             if(chairUpdate.getTheZone() != null){chair.setTheZone(chairUpdate.getTheZone());}
+            return;
             }
         }
     }

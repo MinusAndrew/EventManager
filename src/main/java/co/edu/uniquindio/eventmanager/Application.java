@@ -18,9 +18,7 @@ public class Application extends javafx.application.Application {
         Zone zone1 = new Zone("as","ew",3,4400);
 
         Place place = new Place("2132","asdsa","asdaw");
-        place.addZone(zone);
-        place.updateZone(zone1);
-        System.out.println(zone.toString());
+
         /*
         Move to unit test
         Purchase purchase = Purchase.builder().total(7.500).dateCreated(LocalDate.now()).idPurchase("727").build();

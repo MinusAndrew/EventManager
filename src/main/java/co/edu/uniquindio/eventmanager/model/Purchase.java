@@ -7,20 +7,23 @@ import java.util.ArrayList;
 @ToString
 @Getter
 @Setter
-public class Purchase{
-    String idPurchase;
-    LocalDate dateCreated;
-    double total;
+public class Purchase {
+    private String idPurchase;
+    private LocalDate dateCreated;
+    private double total;
 
     private ArrayList<Ticket> ticketList;
     private final User theUser;
 
     @Builder
-    public Purchase(User theUser, double total, LocalDate dateCreated, String idPurchase, ArrayList<Ticket> ticketList) {
+    public Purchase(User theUser, double total, String idPurchase, ArrayList<Ticket> ticketList) {
         this.theUser = theUser;
         this.ticketList = ticketList;
         this.total = total;
-        this.dateCreated = dateCreated;
+        this.dateCreated = LocalDate.now();
         this.idPurchase = idPurchase;
+    }
+    public String getIdPurchase(){
+        return idPurchase;
     }
 }

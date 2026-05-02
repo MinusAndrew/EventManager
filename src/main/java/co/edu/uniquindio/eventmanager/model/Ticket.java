@@ -2,10 +2,12 @@ package co.edu.uniquindio.eventmanager.model;
 
 import co.edu.uniquindio.eventmanager.model.Enums.TicketStatus;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @ToString
 @Getter
+@Setter
 public class Ticket {
     private String idTicket;
     private double finalCost;
