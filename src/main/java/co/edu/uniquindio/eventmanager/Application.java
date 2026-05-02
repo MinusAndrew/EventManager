@@ -1,7 +1,6 @@
 package co.edu.uniquindio.eventmanager;
 
-import co.edu.uniquindio.eventmanager.model.Purchase;
-import co.edu.uniquindio.eventmanager.model.User;
+import co.edu.uniquindio.eventmanager.model.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -15,6 +14,10 @@ public class Application extends javafx.application.Application {
         /*
         Take this as Main
          */
+        Zone zone = new Zone("as","ma",5,200);
+        Zone zone1 = new Zone("as","ew",3,4400);
+
+        Place place = new Place("2132","asdsa","asdaw");
 
         /*
         Move to unit test

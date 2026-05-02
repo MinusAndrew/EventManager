@@ -1,6 +1,7 @@
 package co.edu.uniquindio.eventmanager.model.Managers;
 
 import co.edu.uniquindio.eventmanager.model.Chair;
+import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
 import co.edu.uniquindio.eventmanager.model.Zone;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class ChairManager {
             if(chairUpdate.getRow() != 0){chair.setRow(chairUpdate.getRow());}
             if(chairUpdate.getNumber() != 0){chair.setNumber(chairUpdate.getNumber());}
             if(chairUpdate.getTheZone() != null){chair.setTheZone(chairUpdate.getTheZone());}
+            return;
             }
         }
     }
@@ -55,4 +57,15 @@ public class ChairManager {
             System.out.println("Couldn't delete, chair not found");
         }
     }
+    public static void enableChair(Chair chair){
+        chair.setChairStatus(ChairStatus.AVAILABLE);
+    }
+    public static void reserveChair(Chair chair){
+        chair.setChairStatus(ChairStatus.RESERVED);
+    }
+    public static void blockChair(Chair chair){
+        chair.setChairStatus(ChairStatus.BLOCKED);
+    }
+
+
 }
