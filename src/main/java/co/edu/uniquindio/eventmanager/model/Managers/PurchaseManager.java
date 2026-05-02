@@ -19,7 +19,7 @@ public class PurchaseManager {
     public static Purchase searchPurchaseById(String id){
         for(Purchase p : EventManager.getInstance().getPurchaseList()){
             if(p.getIdPurchase().equals(id)){
-                System.out.println("Purchase: "+id+" founded");
+                System.out.println("Purchase: "+id+" found");
                 return p;
             }
             else {
