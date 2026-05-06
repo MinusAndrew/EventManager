@@ -27,7 +27,7 @@ public class ChairManager {
                 return chair;
             }
             else {
-                System.out.println("Chair: "+id+" not founded");
+                System.out.println("Chair: "+id+" not found");
             }
         }
         return null;

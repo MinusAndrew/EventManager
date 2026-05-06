@@ -10,10 +10,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Admin extends User {
-    private final boolean rootAccess = true;
+    // private final boolean rootAccess = true; lmao proxyneeded
 
-    public Admin(String id, String fullName, String email, String phoneNumber) {
-        super(id, fullName, email, phoneNumber);
+    public Admin(String id, String fullName, String email, String phoneNumber, String password) {
+        super(id, fullName, email, phoneNumber, password);
     }
 
     public void addUser(User u) {

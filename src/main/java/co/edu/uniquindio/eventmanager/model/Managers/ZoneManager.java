@@ -17,11 +17,11 @@ public class ZoneManager {
         for(Composite z : place.getZoneList()){
             Zone zone = (Zone) z;
             if(zone.getIdZone().equals(id)){
-                System.out.println("Zone: "+id+" founded");
+                System.out.println("Zone: "+id+" found");
                 return zone;
             }
             else {
-                System.out.println("Zone: "+id+" not founded");
+                System.out.println("Zone: "+id+" not found");
             }
         }
         return null;

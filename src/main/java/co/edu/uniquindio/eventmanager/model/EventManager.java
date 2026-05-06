@@ -8,7 +8,8 @@ import java.util.ArrayList;
 @Getter
 @Setter
 public class EventManager {
-    private static EventManager instance;
+    @Getter
+    private static final EventManager instance = new EventManager("TicketMaster", "EventManagerPlus");
 
     private final String id, name;
     private ArrayList<User> userList;
@@ -25,12 +26,24 @@ public class EventManager {
         this.purchaseList = new ArrayList<>();
     }
 
-    public static EventManager getInstance(){
-        if (instance == null){
-            return new EventManager("TicketMaster", "EventManagerPlus");
+    /**
+     * Method that verifies if a user can log in.
+     * @param email of the user
+     * @param password of the user
+     * @return if the user can log in
+     */
+    public boolean login(String email, String password){
+        boolean flag = false;
+        for(User user : userList){
+            if(user.getEmail().equals(email) && user.comparePasswords(password)){
+                flag = true;
+                break;
+            }
         }
-        return instance;
+        return flag;
     }
+
+
     public void addUser(User u){
         userList.add(u);
     }
@@ -58,6 +71,7 @@ public class EventManager {
     public void removePurchase(Purchase p){
         purchaseList.remove(p);
     }
+
 
 
 }

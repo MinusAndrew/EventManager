@@ -16,11 +16,11 @@ public class UserManager {
     public static User searchUserById(String id){
         for(User user : EventManager.getInstance().getUserList()){
             if(user.getId().equals(id)){
-                System.out.println("User: "+id+" founded");
+                System.out.println("User: "+id+" found");
                 return user;
             }
             else {
-                System.out.println("User: "+id+" not founded");
+                System.out.println("User: "+id+" not found");
             }
         }
         return null;

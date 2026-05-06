@@ -23,7 +23,4 @@ public class Purchase {
         this.dateCreated = LocalDate.now();
         this.idPurchase = idPurchase;
     }
-    public String getIdPurchase(){
-        return idPurchase;
-    }
 }
