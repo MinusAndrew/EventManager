@@ -38,6 +38,7 @@ public class LoginView {
             Stage stage = new Stage();
             //temp var make proxy later
             int adminAcc = 0;
+            //
             switch (adminAcc){
                 case (0):
                     FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("mainMenu.fxml"));

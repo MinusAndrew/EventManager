@@ -22,7 +22,7 @@ public class Application extends javafx.application.Application {
         Take this as Main
          */
         System.out.println("lmao");
-        User user = new User("1", "MinusAndrew", "andrew@aqua.computer", "727", "pazitaTT");
+        User user = new User("1", "MinusAndrew", "andrew@aqua.me", "727", "pazitaTT");
         EventManager.getInstance().addUser(user);
         Zone zone = new Zone("as","ma",5,200);
         Zone zone1 = new Zone("as","ew",3,4400);
