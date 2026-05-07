@@ -1,12 +1,11 @@
-package co.edu.uniquindio.eventmanager.model.Managers;
+package co.edu.uniquindio.eventmanager.controller;
 
 import co.edu.uniquindio.eventmanager.model.EventManager;
 import co.edu.uniquindio.eventmanager.model.Place;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class PlaceManager {
+public class PlaceController {
 
     public static void addPlace(Place place){
         System.out.println("Successfully created");

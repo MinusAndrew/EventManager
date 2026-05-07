@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.crypto.Cipher;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.crypto.*;
 
 @ToString
@@ -31,8 +32,8 @@ public class User {
     }
     public static final SecretKey myDesKey = keygenerator.generateKey();
 
-    public User(String id, String fullName, String email, String phoneNumber, String password) {
-        this.id = id;
+    public User(String fullName, String email, String phoneNumber, String password) {
+        this.id = getSaltString();
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -40,10 +41,24 @@ public class User {
         this.password = encrypt(password);
     }
 
-    /*
-    updateUser();
+     /*
     managePayment();
      */
+
+    // Source - https://stackoverflow.com/a/20536597
+    // Posted by Suresh Atta, modified by community. See post 'Timeline' for change history
+    // Retrieved 2026-05-07, License - CC BY-SA 3.0
+    protected String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 9) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        return salt.toString();
+
+    }
 
     /**
      * Method that encrypts a password

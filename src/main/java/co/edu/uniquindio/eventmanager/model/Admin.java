@@ -1,35 +1,31 @@
 package co.edu.uniquindio.eventmanager.model;
 
-import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
-import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
+import co.edu.uniquindio.eventmanager.controller.*;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
-import co.edu.uniquindio.eventmanager.model.Managers.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Admin extends User {
     // private final boolean rootAccess = true; lmao proxyneeded
 
     public Admin(String id, String fullName, String email, String phoneNumber, String password) {
-        super(id, fullName, email, phoneNumber, password);
+        super(fullName, email, phoneNumber, password);
     }
 
     public void addUser(User u) {
-        UserManager.addUser(u);
+        UserController.addUser(u);
     }
     public User searchUserById(String id) {
-        return UserManager.searchUserById(id);
+        return UserController.searchUserById(id);
     }
     public void updateUser(User u) {
-        UserManager.updateUser(u);
+        UserController.updateUser(u);
     }
     public void removeUser(User u) {
-        UserManager.removeUser(u);
+        UserController.removeUser(u);
     }
     public ArrayList<User> listUsers() {
-        return UserManager.listUsers();
+        return UserController.listUsers();
     }
 
     public void addEvent(Event event){
@@ -85,57 +81,57 @@ public class Admin extends User {
     }
     */
     public void addPlace(Place p){
-        PlaceManager.addPlace(p);
+        PlaceController.addPlace(p);
     }
     public void removePlace(Place p){
-        PlaceManager.removePlace(p);
+        PlaceController.removePlace(p);
     }
     public Place searchPlaceById(String id){
-        return PlaceManager.searchPlaceById(id);
+        return PlaceController.searchPlaceById(id);
     }
     public ArrayList<Place> listPlaces(){
-        return PlaceManager.listPlaces();
+        return PlaceController.listPlaces();
     }
     public void updatePlace(Place placeUpdate){
-        PlaceManager.updatePlace(placeUpdate);
+        PlaceController.updatePlace(placeUpdate);
     }
 
     public void addZone(Zone zone, Place place){
-        ZoneManager.addZone(zone,place);
+        ZoneController.addZone(zone,place);
     }
     public void removeZone(Zone zone, Place place){
-        ZoneManager.removeZone(zone,place);
+        ZoneController.removeZone(zone,place);
     }
     public Zone searchZoneById(String id, Place place){
-        return ZoneManager.searchZoneById(id,place);
+        return ZoneController.searchZoneById(id,place);
     }
     public ArrayList<Zone> listZones(Place place){
-        return ZoneManager.listZones(place);
+        return ZoneController.listZones(place);
     }
     public void updateZone(Zone zone, Place place){
-        ZoneManager.updateZone(zone,place);
+        ZoneController.updateZone(zone,place);
     }
     public void enableChair(Chair chair){
-        ChairManager.enableChair(chair);
+        ChairController.enableChair(chair);
     }
     public void reserveChair(Chair chair){
-        ChairManager.reserveChair(chair);
+        ChairController.reserveChair(chair);
     }
     public void blockChair(Chair chair){
-        ChairManager.blockChair(chair);
+        ChairController.blockChair(chair);
     }
 
     public void addPurchase(Purchase purchase){
-        PurchaseManager.addPurchase(purchase);
+        PurchaseController.addPurchase(purchase);
     }
     public void removePurchase(Purchase purchase){
-        PurchaseManager.removePurchase(purchase);
+        PurchaseController.removePurchase(purchase);
     }
     public Purchase searchPurchaseById(String id){
-        return PurchaseManager.searchPurchaseById(id);
+        return PurchaseController.searchPurchaseById(id);
     }
     public void updatePurchase(Purchase purchase){
-        PurchaseManager.updatePurchase(purchase);
+        PurchaseController.updatePurchase(purchase);
     }
 
 

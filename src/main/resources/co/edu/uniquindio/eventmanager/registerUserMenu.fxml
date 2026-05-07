@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="scenePane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.eventmanager.viewController.RegisterUserView">
+   <children>
+      <Button fx:id="registerButton" layoutX="261.0" layoutY="347.0" mnemonicParsing="false" onAction="#registerAction" text="Registrar" />
+      <TextField fx:id="nameField" layoutX="215.0" layoutY="86.0" promptText="Nombres:" />
+      <TextField fx:id="emailField" layoutX="215.0" layoutY="148.0" promptText="Email:" />
+      <TextField fx:id="phoneNumberField" layoutX="215.0" layoutY="218.0" promptText="Telefono:" />
+      <PasswordField fx:id="trainerPasswdField" layoutX="215.0" layoutY="292.0" promptText="Contraseña:" />
+      <Text layoutX="207.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre Completo del Usuario:" wrappingWidth="186.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="215.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" wrappingWidth="186.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="207.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña del usuario:" wrappingWidth="240.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="209.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telefono del Usuario:" wrappingWidth="198.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Button layoutX="14.0" layoutY="24.0" mnemonicParsing="false" onAction="#backAction" text="Back" />
+   </children>
+</AnchorPane>

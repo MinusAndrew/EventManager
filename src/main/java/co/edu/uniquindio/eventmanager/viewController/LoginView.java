@@ -2,6 +2,7 @@ package co.edu.uniquindio.eventmanager.viewController;
 
 import co.edu.uniquindio.eventmanager.Application;
 import co.edu.uniquindio.eventmanager.model.EventManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
+import static co.edu.uniquindio.eventmanager.viewController.MainView.switchMenu;
 
 public class LoginView {
     @FXML
@@ -24,6 +27,11 @@ public class LoginView {
     private AnchorPane loginPane;
 
     Stage currentWindow;
+
+    @FXML
+    private void registerAction(ActionEvent event) {
+        switchMenu(event, "registerUserMenu.fxml");
+    }
 
     public void loginFX() throws IOException {
 
@@ -73,6 +81,7 @@ public class LoginView {
         stage.setScene(scene1);
         stage.show();
     }
+
     public String grabUser(){
         return usernameField.getText();
     }

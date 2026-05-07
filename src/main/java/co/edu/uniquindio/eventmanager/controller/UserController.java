@@ -1,16 +1,19 @@
-package co.edu.uniquindio.eventmanager.model.Managers;
+package co.edu.uniquindio.eventmanager.controller;
 
 import co.edu.uniquindio.eventmanager.model.EventManager;
 import co.edu.uniquindio.eventmanager.model.User;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class UserManager {
+public class UserController {
 
-    public static void addUser(User user){
-        System.out.println("Successfully created");
-        EventManager.getInstance().addUser(user);
+    public static boolean addUser(User user){
+        boolean flag = EventManager.getInstance().addUser(user);
+        if (flag){
+            System.out.println("Successfully created");
+        }
+        System.out.println("Not Created.");
+        return flag;
     }
 
     public static User searchUserById(String id){

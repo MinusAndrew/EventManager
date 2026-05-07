@@ -44,8 +44,12 @@ public class EventManager {
     }
 
 
-    public void addUser(User u){
+    public boolean addUser(User u){
+        if (name.isBlank() || u.getEmail().isBlank() || u.getPhoneNumber().isBlank() || u.comparePasswords("") || !u.getEmail().contains("@")) {
+            return false;
+        }
         userList.add(u);
+        return true;
     }
     public void removeUser(User u){
         userList.remove(u);
