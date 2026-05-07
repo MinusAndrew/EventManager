@@ -1,9 +1,5 @@
 package co.edu.uniquindio.eventmanager.model;
 
-import co.edu.uniquindio.eventmanager.model.Managers.PurchaseManager;
-
-import java.time.LocalDate;
-
 class Test {
 
     /*

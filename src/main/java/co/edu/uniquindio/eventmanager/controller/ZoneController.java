@@ -1,13 +1,12 @@
-package co.edu.uniquindio.eventmanager.model.Managers;
+package co.edu.uniquindio.eventmanager.controller;
 
 import co.edu.uniquindio.eventmanager.model.Composite;
 import co.edu.uniquindio.eventmanager.model.Place;
 import co.edu.uniquindio.eventmanager.model.Zone;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ZoneManager {
+public class ZoneController {
     public static void addZone(Zone zone, Place place){
         System.out.println("Successfully created");
         place.getZoneList().add(zone);
@@ -17,11 +16,11 @@ public class ZoneManager {
         for(Composite z : place.getZoneList()){
             Zone zone = (Zone) z;
             if(zone.getIdZone().equals(id)){
-                System.out.println("Zone: "+id+" founded");
+                System.out.println("Zone: "+id+" found");
                 return zone;
             }
             else {
-                System.out.println("Zone: "+id+" not founded");
+                System.out.println("Zone: "+id+" not found");
             }
         }
         return null;

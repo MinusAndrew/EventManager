@@ -12,9 +12,10 @@ module co.edu.uniquindio.eventmanager {
     requires com.almasb.fxgl.all;
     requires static lombok;
     requires annotations;
+    requires jdk.compiler;
 
     opens co.edu.uniquindio.eventmanager to javafx.fxml;
     exports co.edu.uniquindio.eventmanager;
-    exports co.edu.uniquindio.eventmanager.controller;
-    opens co.edu.uniquindio.eventmanager.controller to javafx.fxml;
+    exports co.edu.uniquindio.eventmanager.viewController;
+    opens co.edu.uniquindio.eventmanager.viewController to javafx.fxml;
 }
