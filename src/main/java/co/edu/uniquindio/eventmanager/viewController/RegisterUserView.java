@@ -22,14 +22,9 @@ public class RegisterUserView {
     @FXML
     private TextField emailField;
     @FXML
-    private TextField personalIdField;
-    @FXML
     private TextField phoneNumberField;
     @FXML
-    private TextField ageField;
-    @FXML
-    private PasswordField trainerPasswdField;
-
+    private PasswordField userPasswdField;
     @FXML
     private AnchorPane scenePane;
 
@@ -87,6 +82,6 @@ public class RegisterUserView {
     }
     @FXML
     private String grabPasswd(){
-        return trainerPasswdField.getText();
+        return userPasswdField.getText();
     }
 }
