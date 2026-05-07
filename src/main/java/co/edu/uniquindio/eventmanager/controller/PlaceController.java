@@ -1,12 +1,11 @@
-package co.edu.uniquindio.eventmanager.model.Managers;
+package co.edu.uniquindio.eventmanager.controller;
 
 import co.edu.uniquindio.eventmanager.model.EventManager;
 import co.edu.uniquindio.eventmanager.model.Place;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class PlaceManager {
+public class PlaceController {
 
     public static void addPlace(Place place){
         System.out.println("Successfully created");
@@ -16,11 +15,11 @@ public class PlaceManager {
     public static Place searchPlaceById(String id){
         for(Place place : EventManager.getInstance().getPlaceList()){
             if(place.getIdPlace().equals(id)){
-                System.out.println("Place: "+id+" founded");
+                System.out.println("Place: "+id+" found");
                 return place;
             }
             else {
-                System.out.println("Place: "+id+" not founded");
+                System.out.println("Place: "+id+" not found");
             }
         }
         return null;

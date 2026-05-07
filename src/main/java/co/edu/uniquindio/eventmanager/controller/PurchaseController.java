@@ -1,11 +1,11 @@
-package co.edu.uniquindio.eventmanager.model.Managers;
+package co.edu.uniquindio.eventmanager.controller;
 
 import co.edu.uniquindio.eventmanager.model.EventManager;
 import co.edu.uniquindio.eventmanager.model.Purchase;
 import lombok.Getter;
 
 @Getter
-public class PurchaseManager {
+public class PurchaseController {
 
     public static void addPurchase(Purchase purchase){
         if(purchase.getTheUser() != null) {

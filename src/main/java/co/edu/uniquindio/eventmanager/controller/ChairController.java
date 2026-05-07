@@ -1,13 +1,10 @@
-package co.edu.uniquindio.eventmanager.model.Managers;
+package co.edu.uniquindio.eventmanager.controller;
 
 import co.edu.uniquindio.eventmanager.model.Chair;
 import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
 import co.edu.uniquindio.eventmanager.model.Zone;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ChairManager {
+public class ChairController {
 
     /*
     I found a way to fix this without too much work adapt it accordingly to the diagram.
@@ -27,7 +24,7 @@ public class ChairManager {
                 return chair;
             }
             else {
-                System.out.println("Chair: "+id+" not founded");
+                System.out.println("Chair: "+id+" not found");
             }
         }
         return null;
