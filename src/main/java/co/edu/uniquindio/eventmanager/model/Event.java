@@ -2,6 +2,7 @@ package co.edu.uniquindio.eventmanager.model;
 
 import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
+import co.edu.uniquindio.eventmanager.model.Enums.EventType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,11 +20,11 @@ public class Event {
 
     private Place thePlace;
 
-    private EventManager eventManager;
+    private EventType eventType;
     private EventStatus eventStatus;
     private EventPolicy eventPolicy;
 
-    public Event(String idEvent, String name, String description, String city, LocalDate date, LocalTime hour, Place thePlace, EventManager eventManager, EventStatus eventStatus, EventPolicy eventPolicy) {
+    public Event(String idEvent, String name, String description, String city, LocalDate date, LocalTime hour, Place thePlace, EventType eventType, EventStatus eventStatus, EventPolicy eventPolicy) {
         this.idEvent = idEvent;
         this.name = name;
         this.description = description;
@@ -31,7 +32,7 @@ public class Event {
         this.date = date;
         this.hour = hour;
         this.thePlace = thePlace;
-        this.eventManager = eventManager;
+        this.eventType = eventType;
         this.eventStatus = eventStatus;
         this.eventPolicy = eventPolicy;
     }

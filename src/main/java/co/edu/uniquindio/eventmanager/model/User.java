@@ -42,7 +42,7 @@ public class User {
     }
 
      /*
-    managePayment();
+    managePayment();c
      */
 
     // Source - https://stackoverflow.com/a/20536597

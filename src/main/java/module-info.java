@@ -14,6 +14,7 @@ module co.edu.uniquindio.eventmanager {
     requires annotations;
     requires jdk.compiler;
 
+    opens co.edu.uniquindio.eventmanager.model to javafx.base;
     opens co.edu.uniquindio.eventmanager to javafx.fxml;
     exports co.edu.uniquindio.eventmanager;
     exports co.edu.uniquindio.eventmanager.viewController;
