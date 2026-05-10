@@ -1,5 +1,8 @@
 package co.edu.uniquindio.eventmanager.model;
 
+import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
+import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
+import co.edu.uniquindio.eventmanager.model.Enums.EventType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,9 +46,27 @@ public class EventManager {
         return flag;
     }
 
+    public User getCurrentUser(String email, String password){
+        for(User user : userList){
+            if(user.getEmail().equals(email) && user.comparePasswords(password)){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Event> getEventByFilter(String city, EventType type, EventStatus status){
+        ArrayList<Event> eventArrayList = new ArrayList<>();
+        for (Event event : EventManager.getInstance().getEventList()){
+            if (event.getCity().equalsIgnoreCase(city) && event.getEventType().equals(type) && event.getEventStatus().equals(status)){
+                eventArrayList.add(event);
+            }
+        }
+        return eventArrayList;
+    }
 
     public boolean addUser(User u){
-        if (name.isBlank() || u.getEmail().isBlank() || u.getPhoneNumber().isBlank() || u.comparePasswords("") || !u.getEmail().contains("@")) {
+        if (name.isBlank() || u.getEmail().isBlank() || u.getPhoneNumber().isBlank() || u.comparePasswords("") || !u.getEmail().matches("^[^@]+@[^@]+\\.[^@]+$")) {
             return false;
         }
         userList.add(u);
@@ -75,7 +96,4 @@ public class EventManager {
     public void removePurchase(Purchase p){
         purchaseList.remove(p);
     }
-
-
-
 }
