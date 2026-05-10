@@ -1,6 +1,5 @@
 package co.edu.uniquindio.eventmanager.model;
 
-import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventType;
 import lombok.Getter;
@@ -19,6 +18,8 @@ public class EventManager {
     private ArrayList<Event> eventList;
     private ArrayList<Place> placeList;
     private ArrayList<Purchase> purchaseList;
+
+    private User currentUser;
 
     private EventManager(String id, String name) {
         this.id = id;
@@ -40,13 +41,14 @@ public class EventManager {
         for(User user : userList){
             if(user.getEmail().equals(email) && user.comparePasswords(password)){
                 flag = true;
+                currentUser = EventManager.getInstance().findCurrentUser(email, password);
                 break;
             }
         }
         return flag;
     }
 
-    public User getCurrentUser(String email, String password){
+    public User findCurrentUser(String email, String password){
         for(User user : userList){
             if(user.getEmail().equals(email) && user.comparePasswords(password)){
                 return user;
