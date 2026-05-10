@@ -11,13 +11,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.crypto.*;
 
-@ToString
 @Getter
 @Setter
 public class User {
     private String id, fullName, email, phoneNumber, password;
     private ArrayList<Purchase> purchaseList;
-    private PaymentType paymentType;
 
     //All these variables are used to encrypt the password, thx.
     public static final KeyGenerator keygenerator;
@@ -41,8 +39,17 @@ public class User {
         this.password = encrypt(password);
     }
 
+    public User(String id, String fullName, String email, String phoneNumber, String password) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.purchaseList = new ArrayList<>();
+        this.password = encrypt(password);
+    }
+
      /*
-    managePayment();
+    managePayment(); // strategy
      */
 
     // Source - https://stackoverflow.com/a/20536597
@@ -84,5 +91,25 @@ public class User {
      */
     public boolean comparePasswords(String password){
         return encrypt(password).equals(this.password);
+    }
+
+
+    /**
+     * Method that updates the password of the user
+     * @param password the new password of the user
+     */
+    public void updatePasswd(String password){
+        setPassword(password);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", purchaseList=" + purchaseList +
+                '}';
     }
 }

@@ -32,25 +32,30 @@ public class UserController {
     /*
     Not sure about it, weird logic
      */
-    public static void updateUser(User userUpdate){
+    public static boolean updateUser(User userUpdate){
+        int check = 0;
         for(User user : EventManager.getInstance().getUserList()) {
             if (user.getId().equals(userUpdate.getId())) {
-                if(userUpdate.getEmail() != null) {
+                if(!userUpdate.getEmail().isBlank() && userUpdate.getEmail().matches("^[^@]+@[^@]+\\.[^@]+$")) {
                     user.setEmail(userUpdate.getEmail());
+                    check++;
                 }
-                if(userUpdate.getPhoneNumber() != null) {
+                if(!userUpdate.getPhoneNumber().isBlank()) {
                     user.setPhoneNumber(userUpdate.getPhoneNumber());
+                    check++;
                 }
-                if(userUpdate.getFullName() != null) {
+                if(!userUpdate.getFullName().isBlank()) {
                     user.setFullName(userUpdate.getFullName());
+                    check++;
                 }
-                if(userUpdate.getEmail() != null){
-                    user.setPaymentType(userUpdate.getPaymentType());
+                if(!userUpdate.comparePasswords("")){
+                    user.updatePasswd(userUpdate.getPassword());
+                    check++;
                 }
-                System.out.println("User updated");
                 break;
+                }
             }
-        }
+        return check > 0;
     }
 
     public static void removeUser(User user){

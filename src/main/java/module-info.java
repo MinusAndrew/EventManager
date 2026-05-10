@@ -17,5 +17,8 @@ module co.edu.uniquindio.eventmanager {
     opens co.edu.uniquindio.eventmanager to javafx.fxml;
     exports co.edu.uniquindio.eventmanager;
     exports co.edu.uniquindio.eventmanager.viewController;
+    exports co.edu.uniquindio.eventmanager.model;
+    exports co.edu.uniquindio.eventmanager.model.Enums;
     opens co.edu.uniquindio.eventmanager.viewController to javafx.fxml;
+    exports co.edu.uniquindio.eventmanager.model.Interfaces;
 }
