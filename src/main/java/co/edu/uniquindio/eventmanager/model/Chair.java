@@ -15,7 +15,7 @@ public class Chair {
     private Zone theZone;
     private ChairStatus chairStatus;
 
-    public Chair(String idChair, int row, int number, Zone theZone, ChairStatus chairStatus) {
+    public Chair(String idChair, int row, int number, ChairStatus chairStatus) {
         this.idChair = idChair;
         this.row = row;
         this.number = number;

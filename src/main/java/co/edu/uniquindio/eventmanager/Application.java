@@ -1,5 +1,6 @@
 package co.edu.uniquindio.eventmanager;
 
+import co.edu.uniquindio.eventmanager.controller.AdminController;
 import co.edu.uniquindio.eventmanager.model.*;
 import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
@@ -45,7 +46,6 @@ public class Application extends javafx.application.Application {
                 LocalDateTime.now(),
                 place,
                 EventType.CONCERT,
-                EventStatus.PUBLISHED,
                 EventPolicy.CANCELLATION
         );
 
@@ -57,7 +57,6 @@ public class Application extends javafx.application.Application {
                 LocalDateTime.now().plusDays(3),
                 place,
                 EventType.THEATER,
-                EventStatus.DRAFT,
                 EventPolicy.REFUND
         );
 
@@ -69,7 +68,6 @@ public class Application extends javafx.application.Application {
                 LocalDateTime.now().plusWeeks(1),
                 place,
                 EventType.CONFERENCE,
-                EventStatus.PUBLISHED,
                 EventPolicy.CANCELLATION
         );
 
@@ -81,7 +79,6 @@ public class Application extends javafx.application.Application {
                 LocalDateTime.now().plusDays(10),
                 place,
                 EventType.CONCERT,
-                EventStatus.PAUSED,
                 EventPolicy.REFUND
         );
 
@@ -93,7 +90,6 @@ public class Application extends javafx.application.Application {
                 LocalDateTime.now().plusMonths(1),
                 place,
                 EventType.THEATER,
-                EventStatus.CANCELLED,
                 EventPolicy.CANCELLATION
         );
 
@@ -102,6 +98,10 @@ public class Application extends javafx.application.Application {
         EventManager.getInstance().addEvent(event3);
         EventManager.getInstance().addEvent(event4);
         EventManager.getInstance().addEvent(event5);
+
+        AdminController adminController = new AdminController();
+        Admin admin = new Admin("Jacobo","esau@gmail.com","6767","iwtkms");
+        Proxy proxy = new Proxy(adminController,admin);
 
         System.out.println(EventManager.getInstance().getEventList().size());
     }

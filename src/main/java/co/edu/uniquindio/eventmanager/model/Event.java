@@ -26,7 +26,7 @@ public class Event {
     private EventStatus eventStatus;
     private EventPolicy eventPolicy;
 
-    public Event(String idEvent, String name, String description, LocalDateTime date,String city, Place thePlace, EventType eventType, EventPolicy eventPolicy) {
+    public Event(String idEvent, String name, String description, String city, LocalDateTime date, Place thePlace, EventType eventType, EventPolicy eventPolicy) {
         this.idEvent = idEvent;
         this.name = name;
         this.description = description;

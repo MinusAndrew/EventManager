@@ -1,5 +1,7 @@
 package co.edu.uniquindio.eventmanager.model;
 
+import co.edu.uniquindio.eventmanager.controller.AdminController;
+
 import java.util.ArrayList;
 
 
