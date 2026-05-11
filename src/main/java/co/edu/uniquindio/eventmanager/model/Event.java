@@ -1,5 +1,6 @@
 package co.edu.uniquindio.eventmanager.model;
 
+import co.edu.uniquindio.eventmanager.controller.ZoneController;
 import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventType;
@@ -11,7 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
 @ToString
 @Getter
@@ -36,6 +36,14 @@ public class Event {
         this.eventType = eventType;
         this.eventStatus = EventStatus.PUBLISHED;
         this.eventPolicy = eventPolicy;
+    }
+
+    public String getEventPrices(){
+        StringBuilder priceCheck = new StringBuilder();
+        for (Zone zone : ZoneController.listZones(thePlace)){
+            priceCheck.append("Price of ").append(zone.getName()).append(" ").append(zone.getStartingPrice()).append(" ");
+        }
+        return priceCheck.toString();
     }
 
     public String notification() {
