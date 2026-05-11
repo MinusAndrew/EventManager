@@ -13,6 +13,7 @@ module co.edu.uniquindio.eventmanager {
     requires static lombok;
     requires annotations;
     requires jdk.compiler;
+    requires java.desktop;
 
     opens co.edu.uniquindio.eventmanager.model to javafx.base;
     opens co.edu.uniquindio.eventmanager to javafx.fxml;
@@ -21,5 +22,6 @@ module co.edu.uniquindio.eventmanager {
     exports co.edu.uniquindio.eventmanager.model;
     exports co.edu.uniquindio.eventmanager.model.Enums;
     opens co.edu.uniquindio.eventmanager.viewController to javafx.fxml;
+    opens co.edu.uniquindio.eventmanager.viewController.modifyView to javafx.fxml;
     exports co.edu.uniquindio.eventmanager.model.Interfaces;
 }

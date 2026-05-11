@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Application extends javafx.application.Application {
@@ -20,7 +21,7 @@ public class Application extends javafx.application.Application {
         Move to unit test
         Purchase purchase = Purchase.builder().total(7.500).dateCreated(LocalDate.now()).idPurchase("727").build();
          */
-
+        LoginView.createLoginMenu();
         /*
         Take this as Main
          */
@@ -32,14 +33,76 @@ public class Application extends javafx.application.Application {
         Zone zone1 = new Zone("as","ew",3,4400);
 
         Place place = new Place("2132","asdsa","asdaw");
+        Place place2 = new Place("2132","asdsa","asdaw");
+        EventManager.getInstance().addPlace(place);
+        EventManager.getInstance().addPlace(place2);
 
-        Event event = new Event("123123", "SI", "No sé", "Colombia",
-                LocalDate.now(), LocalTime.now(), place, EventType.CONCERT,
-                EventStatus.PUBLISHED, EventPolicy.CANCELLATION);
+        Event event1 = new Event(
+                "EVT-001",
+                "SI",
+                "Festival de música electrónica",
+                "Colombia",
+                LocalDateTime.now(),
+                place,
+                EventType.CONCERT,
+                EventStatus.PUBLISHED,
+                EventPolicy.CANCELLATION
+        );
 
-        EventManager.getInstance().addEvent(event);
+        Event event2 = new Event(
+                "EVT-002",
+                "NO",
+                "Obra clásica de Shakespeare",
+                "Colombia",
+                LocalDateTime.now().plusDays(3),
+                place,
+                EventType.THEATER,
+                EventStatus.DRAFT,
+                EventPolicy.REFUND
+        );
+
+        Event event3 = new Event(
+                "EVT-003",
+                "SI",
+                "Conferencia de tecnología e IA",
+                "Colombia",
+                LocalDateTime.now().plusWeeks(1),
+                place,
+                EventType.CONFERENCE,
+                EventStatus.PUBLISHED,
+                EventPolicy.CANCELLATION
+        );
+
+        Event event4 = new Event(
+                "EVT-004",
+                "NO",
+                "Concierto de rock alternativo",
+                "Colombia",
+                LocalDateTime.now().plusDays(10),
+                place,
+                EventType.CONCERT,
+                EventStatus.PAUSED,
+                EventPolicy.REFUND
+        );
+
+        Event event5 = new Event(
+                "EVT-005",
+                "SI",
+                "Festival internacional de teatro",
+                "Colombia",
+                LocalDateTime.now().plusMonths(1),
+                place,
+                EventType.THEATER,
+                EventStatus.CANCELLED,
+                EventPolicy.CANCELLATION
+        );
+
+        EventManager.getInstance().addEvent(event1);
+        EventManager.getInstance().addEvent(event2);
+        EventManager.getInstance().addEvent(event3);
+        EventManager.getInstance().addEvent(event4);
+        EventManager.getInstance().addEvent(event5);
+
         System.out.println(EventManager.getInstance().getEventList().size());
-
-        LoginView.createLoginMenu();
     }
 }
