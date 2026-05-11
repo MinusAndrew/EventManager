@@ -2,7 +2,14 @@ package co.edu.uniquindio.eventmanager.model;
 
 import co.edu.uniquindio.eventmanager.controller.*;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Admin extends User {
@@ -133,6 +140,44 @@ public class Admin extends User {
     public void updatePurchase(Purchase purchase){
         PurchaseController.updatePurchase(purchase);
     }
+    public ArrayList<Purchase> listPurchases(){
+        return PurchaseController.listPurchase();
+    }
 
+    public void generatePDF(){
+        try {
+            PDDocument document = new PDDocument();
+            PDPage page = new PDPage(PDRectangle.A4);
+            document.addPage(page);
+            PDPageContentStream content = new PDPageContentStream(document,page);
+
+            content.beginText();
+            content.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
+            content.newLineAtOffset(20,page.getMediaBox().getHeight()-52);
+            content.showText("Hallo world");
+            content.endText();
+
+            content.close();
+
+            document.save("prueba.pdf");
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String salesPerPeriod(LocalDateTime initial, LocalDateTime end){
+        int count = 0;
+        for(Purchase p : listPurchases()){
+            if(p.getDateCreated().isAfter(initial) && p.getDateCreated().isBefore(end)){
+                count++;
+            }
+        }
+        return "En el periodo entre el " + initial + " y el " + end + " se han realizado un total de " + count + " compras";
+    }
+
+    private String cancellationRate(){
+        return "";
+    }
 
 }

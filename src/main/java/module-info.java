@@ -13,6 +13,7 @@ module co.edu.uniquindio.eventmanager {
     requires static lombok;
     requires annotations;
     requires jdk.compiler;
+    requires org.apache.pdfbox;
 
     opens co.edu.uniquindio.eventmanager to javafx.fxml;
     exports co.edu.uniquindio.eventmanager;
