@@ -4,6 +4,8 @@ import co.edu.uniquindio.eventmanager.model.EventManager;
 import co.edu.uniquindio.eventmanager.model.Purchase;
 import lombok.Getter;
 
+import java.util.ArrayList;
+
 @Getter
 public class PurchaseController {
 
@@ -48,6 +50,9 @@ public class PurchaseController {
         } else {
             System.out.println("Couldn't delete, purchase not found");
         }
+    }
+    public static ArrayList<Purchase> listPurchase(){
+        return EventManager.getInstance().getPurchaseList();
     }
 
 }
