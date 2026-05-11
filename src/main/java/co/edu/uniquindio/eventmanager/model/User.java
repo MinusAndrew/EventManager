@@ -1,6 +1,10 @@
 package co.edu.uniquindio.eventmanager.model;
 
 import co.edu.uniquindio.eventmanager.model.Enums.PaymentType;
+import co.edu.uniquindio.eventmanager.model.Interfaces.Payment;
+import co.edu.uniquindio.eventmanager.model.UserPayments.ApplePayment;
+import co.edu.uniquindio.eventmanager.model.UserPayments.CardPayment;
+import co.edu.uniquindio.eventmanager.model.UserPayments.PayPalPayment;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,8 +19,10 @@ import javax.crypto.*;
 @Setter
 public class User implements Observer{
     private String id, fullName, email, phoneNumber, password;
+
     private ArrayList<Purchase> purchaseList;
     private boolean rootAccess = false;
+    private ArrayList<Purchase> cartList;
 
     //All these variables are used to encrypt the password, thx.
     public static final KeyGenerator keygenerator;
@@ -37,6 +43,7 @@ public class User implements Observer{
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.purchaseList = new ArrayList<>();
+        this.cartList = new ArrayList<>();
         this.password = encrypt(password);
     }
 
@@ -46,12 +53,27 @@ public class User implements Observer{
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.purchaseList = new ArrayList<>();
+        this.cartList = new ArrayList<>();
         this.password = encrypt(password);
     }
 
-     /*
-    managePayment(); // strategy
-     */
+    public boolean managePayment(PaymentType type) {
+        Payment strategy;
+        switch (type) {
+            case APPLE:
+                strategy = new ApplePayment();
+                break;
+            case CARD:
+                strategy = new CardPayment();
+                break;
+            case PAYPAL:
+                strategy = new PayPalPayment();
+                break;
+            default:
+                return false;
+        }
+        return strategy.executePayment();
+    }
 
     // Source - https://stackoverflow.com/a/20536597
     // Posted by Suresh Atta, modified by community. See post 'Timeline' for change history

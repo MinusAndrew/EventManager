@@ -2,13 +2,19 @@ package co.edu.uniquindio.eventmanager.viewController;
 
 import co.edu.uniquindio.eventmanager.Application;
 import co.edu.uniquindio.eventmanager.controller.UserController;
+import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventType;
+import co.edu.uniquindio.eventmanager.model.Enums.TicketStatus;
 import co.edu.uniquindio.eventmanager.model.Event;
 import co.edu.uniquindio.eventmanager.model.EventManager;
 import co.edu.uniquindio.eventmanager.model.Place;
 import co.edu.uniquindio.eventmanager.model.User;
-import com.sun.tools.javac.Main;
+import co.edu.uniquindio.eventmanager.model.Purchase;
+import co.edu.uniquindio.eventmanager.model.Ticket;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,13 +27,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lombok.Setter;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -47,6 +51,31 @@ public class MainView implements Initializable {
     private TableColumn <Event, EventType> typeColumn;
     @FXML
     private TableColumn <Event, EventStatus> statusColumn;
+
+    @FXML
+    private TableView<Purchase> historyTable;
+    @FXML
+    private TableColumn<Purchase, String> historyIdPurchaseColumn;
+    @FXML
+    private TableColumn<Purchase, LocalDate> historyDateColumn;
+    @FXML
+    private TableColumn<Purchase, Double> historyTotalColumn;
+    @FXML
+    private TableColumn<Purchase, String> historyPaymentColumn;
+    @FXML
+    private TableColumn<Purchase, Integer> historyTicketsColumn;
+
+
+    @FXML
+    private TableView<Purchase> cartTable;
+    @FXML
+    private TableColumn<Purchase, String> cartEventColumn;
+    @FXML
+    private TableColumn<Purchase, Double> cartTotalColumn;
+    @FXML
+    private TableColumn<Purchase, String> cartPaymentColumn;
+    @FXML
+    private TableColumn<Purchase, Integer> cartTicketsColumn;
 
     @FXML
     private Text userDataText;
@@ -81,19 +110,51 @@ public class MainView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        userDataText.setText(EventManager.getInstance().getCurrentUser().toString());
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        cityColumn.setCellValueFactory(new PropertyValueFactory<>("city"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        placeColumn.setCellValueFactory(new PropertyValueFactory<>("thePlace"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("eventType"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("eventStatus"));
-        typeChoiceBox.getItems().addAll(EventType.values());
-        statusChoiceBox.getItems().addAll(EventStatus.values());
+
+        if (eventTable != null){
+            userDataText.setText(EventManager.getInstance().getCurrentUser().toString());
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            cityColumn.setCellValueFactory(new PropertyValueFactory<>("city"));
+            dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+            placeColumn.setCellValueFactory(new PropertyValueFactory<>("thePlace"));
+            typeColumn.setCellValueFactory(new PropertyValueFactory<>("eventType"));
+            statusColumn.setCellValueFactory(new PropertyValueFactory<>("eventStatus"));
+            typeChoiceBox.getItems().addAll(EventType.values());
+            statusChoiceBox.getItems().addAll(EventStatus.values());
+            fillUpEventList();
+        }
+
+        if (historyTable != null) {
+            historyIdPurchaseColumn.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(cellData.getValue().getTicketList().isEmpty() ? "" : cellData.getValue().getIdPurchase()));
+            historyTotalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
+            historyPaymentColumn.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(cellData.getValue().getPaymentType().toString()));
+            historyDateColumn.setCellValueFactory(cellData ->
+                    new SimpleObjectProperty<>(cellData.getValue().getDateCreated().toLocalDate()));
+            historyTicketsColumn.setCellValueFactory(cellData ->
+                    new SimpleIntegerProperty(cellData.getValue().getTicketList().size()).asObject());
+        }
+
+        if (cartTable != null) {
+            cartEventColumn.setCellValueFactory(cellData -> 
+                new SimpleStringProperty(cellData.getValue().getTicketList().isEmpty() ? "" : cellData.getValue().getTicketList().get(0).getTheEvent().getName()));
+            cartTotalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
+            cartPaymentColumn.setCellValueFactory(cellData -> 
+                new SimpleStringProperty(cellData.getValue().getPaymentType().toString()));
+            cartTicketsColumn.setCellValueFactory(cellData -> 
+                new SimpleIntegerProperty(cellData.getValue().getTicketList().size()).asObject());
+        }
+    }
+
+
+    public void fillUpEventList(){
+        eventTable.getItems().addAll(EventManager.getInstance().getEventList());
+        eventTable.refresh();
     }
 
     @FXML
-    public void fillUpEventList(){
+    public void fillUpFilteredEventList(){
         eventTable.getItems().clear();
         String city = cityField.getText().toLowerCase();
         ArrayList<Event> check = EventManager.getInstance().getEventByFilter(city, typeChoiceBox.getValue(), statusChoiceBox.getValue());
@@ -105,6 +166,31 @@ public class MainView implements Initializable {
         }
         eventTable.refresh();
         System.out.println("searched");
+    }
+
+    @FXML
+    public void checkEventDetailsAction(ActionEvent event){
+        Event selectedEvent = eventTable.getSelectionModel().getSelectedItem();
+        if (selectedEvent == null) {
+            errorAlert.setContentText("Por favor, seleccione un evento de la lista para ver sus detalles.");
+            errorAlert.showAndWait();
+            return;
+        }
+        EventManager.getInstance().setCurrentSelectedEvent(selectedEvent);
+        switchMenu(event, "eventDetailsMenu.fxml");
+    }
+
+
+    @FXML
+    public void buyEventAction(ActionEvent event) {
+        Event selectedEvent = eventTable.getSelectionModel().getSelectedItem();
+        if (selectedEvent == null) {
+            errorAlert.setContentText("Por favor, seleccione un evento de la lista para comprar entradas.");
+            errorAlert.showAndWait();
+            return;
+        }
+        EventManager.getInstance().setCurrentSelectedEvent(selectedEvent);
+        switchMenu(event, "purchaseMenu.fxml");
     }
 
     @FXML
@@ -162,5 +248,95 @@ public class MainView implements Initializable {
 
     public String getPasswordFromField(){
         return passwordField.getText();
+    }
+
+    @FXML
+    public void refreshCartAction() {
+        if (cartTable != null) {
+            cartTable.getItems().clear();
+            User currentUser = EventManager.getInstance().getCurrentUser();
+            if (currentUser != null && currentUser.getCartList() != null) {
+                cartTable.getItems().addAll(currentUser.getCartList());
+            }
+        }
+    }
+
+    @FXML
+    public void refreshUserTabAction(){
+        userDataText.setText(EventManager.getInstance().getCurrentUser().toString());
+        refreshHistoryAction();
+    }
+
+    @FXML
+    public void refreshHistoryAction() {
+        if (historyTable != null) {
+            historyTable.getItems().clear();
+            User currentUser = EventManager.getInstance().getCurrentUser();
+            if (currentUser != null && currentUser.getCartList() != null) {
+                historyTable.getItems().addAll(currentUser.getPurchaseList());
+            }
+        }
+    }
+
+    @FXML
+    public void processCartAction(ActionEvent event) {
+        Purchase selected = cartTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Seleccione una compra del carrito para procesar.");
+            return;
+        }
+        User currentUser = EventManager.getInstance().getCurrentUser();
+        boolean success = currentUser.managePayment(selected.getPaymentType());
+        if (success) {
+            if (PurchaseView.checkTheresChairList()){
+                for (Ticket t : selected.getTicketList()) {
+                    t.getTheChair().setChairStatus(ChairStatus.SOLD);
+                    t.setTicketStatus(TicketStatus.ACTIVE);
+                }
+            }
+            currentUser.getCartList().remove(selected);
+            currentUser.getPurchaseList().add(selected);
+            EventManager.getInstance().addPurchase(selected);
+            infoAlert.setContentText("Compra procesada exitosamente!");
+            infoAlert.showAndWait();
+            refreshCartAction();
+        } else {
+            showAlert("El pago no pudo ser procesado.");
+        }
+    }
+
+    @FXML
+    public void editCartAction(ActionEvent event) {
+        Purchase selected = cartTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Seleccione una compra del carrito para modificar.");
+            return;
+        }
+        EventManager.getInstance().setCurrentEditPurchase(selected);
+        if (!selected.getTicketList().isEmpty()) {
+            EventManager.getInstance().setCurrentSelectedEvent(selected.getTicketList().get(0).getTheEvent());
+        }
+        switchMenu(event, "purchaseMenu.fxml");
+    }
+
+    @FXML
+    public void deleteCartAction(ActionEvent event) {
+        Purchase selected = cartTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Seleccione una compra del carrito para eliminar.");
+            return;
+        }
+        for (Ticket t : selected.getTicketList()) {
+            if (t.getTheChair() != null) {
+                t.getTheChair().setChairStatus(ChairStatus.AVAILABLE);
+            }
+        }
+        EventManager.getInstance().getCurrentUser().getCartList().remove(selected);
+        refreshCartAction();
+    }
+
+    private void showAlert(String msg) {
+        errorAlert.setContentText(msg);
+        errorAlert.showAndWait();
     }
 }

@@ -1,5 +1,6 @@
 package co.edu.uniquindio.eventmanager.model;
 
+import co.edu.uniquindio.eventmanager.controller.ZoneController;
 import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventType;
@@ -15,7 +16,8 @@ import java.time.format.FormatStyle;
 
 @ToString
 @Getter
-@Setter
+@SetterProxy proxy = new Proxy(adminController,admin);
+        proxy.addPlace(place);
 public class Event {
     private String idEvent, name, description, city;
     private LocalDateTime date;
@@ -26,7 +28,7 @@ public class Event {
     private EventStatus eventStatus;
     private EventPolicy eventPolicy;
 
-    public Event(String idEvent, String name, String description, LocalDateTime date,String city, Place thePlace, EventType eventType, EventPolicy eventPolicy) {
+    public Event(String idEvent, String name, String description, String city, LocalDateTime date, Place thePlace, EventType eventType, EventStatus eventStatus, EventPolicy eventPolicy) {
         this.idEvent = idEvent;
         this.name = name;
         this.description = description;
@@ -43,5 +45,13 @@ public class Event {
                 ", Descripcion:" + description +
                 ", En la ciudad de " + city +
                 ", el dia " + date.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG,FormatStyle.SHORT)) + " no faltes!!!";
+    }
+
+    public String getEventPrices(){
+        StringBuilder priceCheck = new StringBuilder();
+        for (Zone zone : ZoneController.listZones(thePlace)){
+            priceCheck.append("Price of ").append(zone.getName()).append(" ").append(zone.getStartingPrice()).append(" ");
+        }
+        return priceCheck.toString();
     }
 }
