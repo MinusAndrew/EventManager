@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 
 public class Proxy  implements ServiceProxy {
-    private final Admin realService;
+    private final AdminController realService;
     private final User rolUser;
 
-    public Proxy(Admin admin, User user){
+    public Proxy(AdminController admin, User user){
         this.realService = admin;
         this.rolUser = user;
     }
