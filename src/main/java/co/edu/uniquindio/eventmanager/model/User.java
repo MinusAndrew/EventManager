@@ -13,7 +13,7 @@ import javax.crypto.*;
 
 @Getter
 @Setter
-public class User {
+public class User implements Observer{
     private String id, fullName, email, phoneNumber, password;
     private ArrayList<Purchase> purchaseList;
 
@@ -111,5 +111,11 @@ public class User {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", purchaseList=" + purchaseList +
                 '}';
+    }
+
+    @Override
+    public String update(String message) {
+        System.out.println(fullName + " recibio una nueva notificacion: " + message);
+        return message;
     }
 }

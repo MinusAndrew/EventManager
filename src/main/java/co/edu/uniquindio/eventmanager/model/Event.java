@@ -10,6 +10,8 @@ import lombok.ToString;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 @ToString
 @Getter
@@ -24,15 +26,22 @@ public class Event {
     private EventStatus eventStatus;
     private EventPolicy eventPolicy;
 
-    public Event(String idEvent, String name, String description, String city, LocalDateTime date, Place thePlace, EventType eventType, EventStatus eventStatus, EventPolicy eventPolicy) {
+    public Event(String idEvent, String name, String description, String city, Place thePlace, EventType eventType, EventPolicy eventPolicy) {
         this.idEvent = idEvent;
         this.name = name;
         this.description = description;
         this.city = city;
-        this.date = date;
+        this.date = LocalDateTime.now();
         this.thePlace = thePlace;
         this.eventType = eventType;
-        this.eventStatus = eventStatus;
+        this.eventStatus = EventStatus.PUBLISHED;
         this.eventPolicy = eventPolicy;
+    }
+
+    public String notification() {
+        return "¡¡¡Nuevo evento!!! : " + name +
+                ", Descripcion:" + description +
+                ", En la ciudad de " + city +
+                ", el dia " + date.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG,FormatStyle.SHORT)) + " no faltes!!!";
     }
 }

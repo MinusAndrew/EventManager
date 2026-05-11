@@ -77,9 +77,9 @@ public class EventManager {
     public void removeUser(User u){
         userList.remove(u);
     }
-
     public void addEvent(Event e){
         eventList.add(e);
+        notifyObservers(e.notification());
     }
     public void removeEvent(Event e){
         eventList.remove(e);
@@ -97,5 +97,11 @@ public class EventManager {
     }
     public void removePurchase(Purchase p){
         purchaseList.remove(p);
+    }
+
+    public void notifyObservers(String message){
+        for(Observer o : userList){
+            o.update(message);
+        }
     }
 }
