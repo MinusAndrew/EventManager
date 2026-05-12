@@ -335,6 +335,13 @@ public class MainView implements Initializable {
         refreshCartAction();
     }
 
+    @FXML
+    public void generateAction(){
+        EventManager.getInstance().getCurrentUser().generateReceipt();
+        infoAlert.setContentText("Se ha generado el recibo");
+        infoAlert.showAndWait();
+    }
+
     private void showAlert(String msg) {
         errorAlert.setContentText(msg);
         errorAlert.showAndWait();

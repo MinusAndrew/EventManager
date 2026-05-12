@@ -138,7 +138,9 @@ public class User implements Observer{
         return
                         "   ID: " + id + "\n" +
                         "   Name: " + fullName + "\n" +
-                        "   Email: " + email;
+                        "   Email: " + email + "\n" +
+                                "   Phone Number: "  + phoneNumber;
+
     }
 
     @Override

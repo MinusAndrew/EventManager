@@ -24,6 +24,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -36,6 +37,8 @@ import java.time.format.FormatStyle;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import static co.edu.uniquindio.eventmanager.viewController.MainView.switchMenu;
 
 public class AdminView {
 
@@ -126,6 +129,10 @@ public class AdminView {
     private javafx.scene.chart.PieChart tasaCancelacionChart;
     @FXML
     private javafx.scene.chart.BarChart<String, Number> topEventosChart;
+    @FXML
+    private AnchorPane scenePane;
+
+    Stage currentWindow;
 
     private AdminController adminController = new AdminController();
     private EventManager eventManager = EventManager.getInstance();
@@ -1313,5 +1320,11 @@ public class AdminView {
             );
             error.showAndWait();
         }
+    }
+    @FXML
+    private void logoutAction(ActionEvent event) {
+        currentWindow = (Stage) scenePane.getScene().getWindow();
+        currentWindow.close();
+        switchMenu(event, "loginMenu.fxml");
     }
 }
