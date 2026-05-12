@@ -51,10 +51,4 @@ public class Zone implements Composite {
         return c;
     }
 
-
-
-    /*
-    setProperties();
-     */
-
 }

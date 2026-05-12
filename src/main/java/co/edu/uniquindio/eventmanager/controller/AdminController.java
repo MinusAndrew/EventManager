@@ -2,6 +2,7 @@ package co.edu.uniquindio.eventmanager.controller;
 
 import co.edu.uniquindio.eventmanager.model.*;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
+import co.edu.uniquindio.eventmanager.model.Enums.TicketStatus;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -10,6 +11,8 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 
 public class AdminController implements ServiceProxy {
@@ -134,7 +137,7 @@ public class AdminController implements ServiceProxy {
         return true;
     }
 
-    public void generatePDF() {
+    public void generatePDFReport(LocalDateTime initial, LocalDateTime end) {
         try {
             PDDocument document = new PDDocument();
             PDPage page = new PDPage(PDRectangle.A4);
@@ -144,12 +147,14 @@ public class AdminController implements ServiceProxy {
             content.beginText();
             content.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
             content.newLineAtOffset(20, page.getMediaBox().getHeight() - 52);
-            content.showText("Hallo world");
+            content.showText(salesPerPeriod(initial, end));
+            content.newLineAtOffset(0, -28);
+            content.showText(cancellationRate(initial, end));
             content.endText();
 
             content.close();
 
-            document.save("prueba.pdf");
+            document.save("src/main/resources/reporte.pdf");
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -162,12 +167,27 @@ public class AdminController implements ServiceProxy {
                 count++;
             }
         }
-        return "En el periodo entre el " + initial + " y el " + end + " se han realizado un total de " + count + " compras";
+        return "En el periodo entre el " + initial.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) + " y el " + end.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) + " se han realizado un total de " + count + " compras";
     }
-    private String cancellationRate() {
-        return "";
-    }
+    private String cancellationRate(LocalDateTime initial, LocalDateTime end) {
+        int totalTickets = 0, cancelledTickets = 0;
+        for(Purchase p : listPurchases()){
+            if(p.getDateCreated().isAfter(initial) && p.getDateCreated().isBefore(end)){
+                for(Ticket t : p.getTicketList()) {
+                    if (t.getTicketStatus() == TicketStatus.CANCELED) {
+                        cancelledTickets++;
+                    }
+                }
+            }
+            totalTickets++;
+        }
+        double rate = 0;
+        if(!(totalTickets == 0)){
+           rate = (double)((cancelledTickets/totalTickets)*100);
+        };
 
+        return "La tasa de cancelacion en el periodo entre el " + initial.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) + " y el " + end.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) + " fue del " + rate + "%";
+    }
 }
 
 
