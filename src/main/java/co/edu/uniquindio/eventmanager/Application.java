@@ -28,8 +28,12 @@ public class Application extends javafx.application.Application {
         // Admin admin = new Admin("Juan,)
         User user = new User("MinusAndrew", "andrew@aqua.me", "727", "pazitaTT");
         EventManager.getInstance().addUser(user);
-        Zone zone = new Zone("as","ma",5,200);
-        Zone zone1 = new Zone("as2","ew",3,4400);
+        Zone zone = Zone.builder().idZone("Z-01").name("VIP / Front Stage").capacity(50).startingPrice(60000.0).build();
+        for (int i = 1; i <= zone.getCapacity(); i++) {
+            zone.addChair(new Chair("V" + i, (i - 1) / 10 + 1, (i - 1) % 10 + 1, ChairStatus.AVAILABLE));
+        }
+        Zone zone1 = Zone.builder().idZone("Z-02").name("General Admission").capacity(15).startingPrice(42000.0).build();
+
         Chair chair1 = new Chair("123",9,1, ChairStatus.AVAILABLE);
         chair1.setTheZone(zone1);
         zone1.addChair(chair1);

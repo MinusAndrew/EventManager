@@ -73,7 +73,7 @@ public class ZoneModify {
         int capacity = Integer.parseInt(newCapacity.getText());
         int price = Integer.parseInt(newPrice.getText());
 
-        Zone newZone = new Zone(id, name, capacity,price);
+        Zone newZone = Zone.builder().idZone(id).name(name).capacity(capacity).startingPrice(price).build();
         newZone.setChairList(zone.getChairList());
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
