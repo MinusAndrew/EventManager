@@ -1,6 +1,6 @@
 package co.edu.uniquindio.eventmanager.model;
 import co.edu.uniquindio.eventmanager.model.Enums.PaymentType;
-import co.edu.uniquindio.eventmanager.model.Interfaces.Clone;
+import co.edu.uniquindio.eventmanager.model.Interfaces.PurchaseClone;
 import co.edu.uniquindio.eventmanager.model.Interfaces.PurchaseComponent;
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 @Getter
 @Setter
-public class Purchase implements Clone, PurchaseComponent {
+public class Purchase implements PurchaseClone, PurchaseComponent {
     private String idPurchase;
     private LocalDateTime dateCreated;
     private double total;
@@ -30,7 +30,7 @@ public class Purchase implements Clone, PurchaseComponent {
     }
 
     @Override
-    public Clone cloneObject() {
+    public Purchase cloneObject() {
         return new Purchase(this.theUser, this.total, this.idPurchase, this.ticketList, this.paymentType);
     }
 
