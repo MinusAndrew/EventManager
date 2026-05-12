@@ -22,6 +22,18 @@ public class Place implements Composite {
         this.zoneList = new ArrayList<>();
     }
 
+    public void addEvent(Event event){
+        eventList.add(event);
+    }
+
+    public void removeEvent(String eventID){
+        for(Event e : eventList){
+            if(e.getIdEvent().equals(eventID)){
+                eventList.remove(e);
+            }
+        }
+    }
+
     public void addZone(Composite zone){
         zoneList.add(zone);
     }
@@ -48,6 +60,6 @@ public class Place implements Composite {
         return
                 "   ID: " + idPlace + "\n" +
                 "   Name: " + name + "\n" +
-                "   Address: " + address;
+                "   Address: " + address + "\n";
     }
 }

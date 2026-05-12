@@ -3,13 +3,12 @@ package co.edu.uniquindio.eventmanager.viewController;
 import co.edu.uniquindio.eventmanager.Application;
 import co.edu.uniquindio.eventmanager.controller.AdminController;
 import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
-import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventType;
 import co.edu.uniquindio.eventmanager.model.Event;
 import co.edu.uniquindio.eventmanager.model.EventManager;
 import co.edu.uniquindio.eventmanager.model.Place;
-import co.edu.uniquindio.eventmanager.model.Zone;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.EventModify;
+import co.edu.uniquindio.eventmanager.viewController.modifyView.PlaceModify;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,20 +23,18 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 public class AdminView {
 
     @FXML
     private TextField newEventID, newEventName, newEventDescription, newEventCity, newEventTime,
-                      newZoneID, newZoneName, newZonePrice, newZoneCapacity;
+                      newPlaceID, newPlaceName, newPlaceAddress;
 
     @FXML
     private ComboBox<Place> newEventPlace;
@@ -52,7 +49,7 @@ public class AdminView {
     private DatePicker newEventDate;
 
     @FXML
-    private TableView eventMenu, zoneMenu;
+    private TableView eventMenu, placeMenu;
 
     @FXML
     private TableColumn<Event, String> eventID;
@@ -62,49 +59,47 @@ public class AdminView {
     private TableColumn<Event, LocalDateTime> eventDate;
 
     @FXML
-    private TableColumn<Zone, String> zoneID;
+    private TableColumn<Place, String> placeID;
     @FXML
-    private TableColumn<Zone, String> zoneName;
+    private TableColumn<Place, String> placeName;
     @FXML
-    private TableColumn<Zone, Integer> zoneCapacity;
+    private TableColumn<Place, Integer> placeAddress;
 
     @FXML
     private Button addEventButton, searchEventButton, backButton,
-                   addZoneButton, searchZoneButton, zoneChairList, zoneAddChair, backButton2;
+                   placeZoneList, addPlaceButton, searchPlaceButton, backButton2;
 
     private AdminController adminController = new AdminController();
 
     private EventManager eventManager = EventManager.getInstance();
 
     ObservableList<Event> observableEvents = FXCollections.observableArrayList(eventManager.getEventList());
+    ObservableList<Place> observablePlaces = FXCollections.observableArrayList(eventManager.getPlaceList());
 
     @FXML
     private void initialize(){
 
-        newEventPlace.getItems().addAll(EventManager.getInstance().getPlaceList());
+        newEventPlace.setItems(observablePlaces);
         newEventType.getItems().addAll(EventType.values());
         newEventPolicy.getItems().addAll(EventPolicy.values());
 
-        System.out.println("Initializing...");
-        System.out.println(eventManager.getEventList().size());
-        System.out.println(observableEvents.size());
-
         eventID.setCellValueFactory(new PropertyValueFactory<>("idEvent"));
-
         eventName.setCellValueFactory(new PropertyValueFactory<>("name"));
-
         eventDate.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        eventID.setReorderable(false);
-        eventName.setReorderable(false);
-        eventDate.setReorderable(false);
+        placeID.setCellValueFactory(new PropertyValueFactory<>("idPlace"));
+        placeName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        placeAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        eventID.setStyle("-fx-alignment: CENTER;");
-        eventName.setStyle("-fx-alignment: CENTER;");
-        eventDate.setStyle("-fx-alignment: CENTER;");
+        eventID.setReorderable(false);placeID.setReorderable(false);
+        eventName.setReorderable(false);placeName.setReorderable(false);
+        eventDate.setReorderable(false);placeAddress.setReorderable(false);
+
+        eventID.setStyle("-fx-alignment: CENTER;");placeID.setStyle("-fx-alignment: CENTER;");
+        eventName.setStyle("-fx-alignment: CENTER;");placeName.setStyle("-fx-alignment: CENTER;");
+        eventDate.setStyle("-fx-alignment: CENTER;");placeAddress.setStyle("-fx-alignment: CENTER;");
 
         eventMenu.setItems(observableEvents);
-
         eventMenu.setRowFactory(tv -> {
 
             TableRow<Event> row = new TableRow<>();
@@ -129,6 +124,12 @@ public class AdminView {
                 Optional<ButtonType> button = alert.showAndWait();
 
                 if(button.isPresent() && button.get() == ButtonType.OK){
+                    Place place = event.getThePlace();
+
+                    if (place != null) {
+                        place.removeEvent(event.getIdEvent());
+                    }
+
                     eventManager.removeEvent(event);
                     observableEvents.remove(event);
                     Alert information = new Alert(Alert.AlertType.INFORMATION);
@@ -202,8 +203,112 @@ public class AdminView {
             return row;
         });
 
-        addEventButton.setOnAction(e -> create());
+        placeMenu.setItems(observablePlaces);
+        placeMenu.setRowFactory(tv -> {
+
+            TableRow<Place> row = new TableRow<>();
+
+            ContextMenu menu = new ContextMenu();
+
+            MenuItem delete = new MenuItem("Delete");
+            MenuItem modify = new MenuItem("Modify");
+            MenuItem read = new MenuItem("Read");
+
+            delete.setOnAction(e -> {
+                Place place = row.getItem();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText("Place Deletion");
+                alert.setContentText("Are you sure you want to delete the place:" + "\n" +
+                        "ID: " + place.getIdPlace() + "\n" +
+                        "Name: " + place.getName()
+                );
+
+                Optional<ButtonType> button = alert.showAndWait();
+
+                if(button.isPresent() && button.get() == ButtonType.OK){
+                    eventManager.removePlace(place);
+                    observablePlaces.remove(place);
+                    Alert information = new Alert(Alert.AlertType.INFORMATION);
+                    information.setTitle("Information");
+                    information.setHeaderText("Succesfull!");
+                    information.setContentText("The following place has been removed:" + "\n" +
+                            "ID: " + place.getIdPlace() + "\n" +
+                            "Name: " + place.getName());
+                    information.show();
+                    for (Event event2 : eventManager.getEventList()) {
+                        if (place.equals(event2.getThePlace())) {
+                            event2.setThePlace(null);
+                        }
+                    }
+                }
+            });
+
+            modify.setOnAction(e -> {
+                Place place = row.getItem();
+
+                try {
+
+                    FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("placeModify.fxml"));
+
+                    Parent root = fxmlLoader.load();
+
+                    PlaceModify controller =
+                            fxmlLoader.getController();
+
+                    controller.setPlace(place);
+
+                    Stage stage = new Stage();
+                    stage.setResizable(false);
+                    stage.setTitle("Modificar Evento");
+                    stage.setScene(new Scene(root));
+                    stage.showAndWait();
+
+                    observablePlaces.setAll(eventManager.getPlaceList());
+
+                    eventMenu.refresh();
+
+
+                } catch (Exception ex) {
+
+                    ex.printStackTrace();
+                }
+            });
+
+            read.setOnAction(e -> {
+                Place place = row.getItem();
+
+                Alert information = new Alert(Alert.AlertType.INFORMATION);
+                information.setTitle("Information");
+                information.setHeaderText(place.getName());
+                information.setContentText("Displaying place information: " + "\n" +
+                        "ID: " + place.getIdPlace() + "\n" +
+                        "Name: " + place.getName() + "\n" +
+                        "Adress: " + place.getAddress() + "\n" +
+                        "Events: " + "\n" + place.getEventList() + "\n" +
+                        "Zones: " + place.getZoneList());
+                information.show();
+            });
+
+            menu.getItems().addAll(delete, modify, read);
+
+            row.contextMenuProperty().bind(
+                    Bindings.when(row.emptyProperty())
+                            .then((ContextMenu) null)
+                            .otherwise(menu)
+            );
+
+            return row;
+        });
+
+        addEventButton.setOnAction(e -> createEvent());
+        addPlaceButton.setOnAction(e -> createPlace());
+
         searchEventButton.setOnAction(e -> searchEvent());
+        searchPlaceButton.setOnAction(e -> searchPlace());
+        placeZoneList.setOnAction(e-> showZoneList());
+
         backButton.setOnAction(e-> {
             try {
                 backMenu(e);
@@ -222,7 +327,7 @@ public class AdminView {
     }
 
     @FXML
-    private void create() {
+    private void createEvent() {
         String id = newEventID.getText();
         String name = newEventName.getText();
         String description = newEventDescription.getText();
@@ -270,15 +375,64 @@ public class AdminView {
                 }
                 if(!duplicated){
                     adminController.addEvent(e);
+                    place.addEvent(e);
                     Alert information = new Alert(Alert.AlertType.INFORMATION);
                     information.setTitle("Information");
                     information.setHeaderText("Succesfull!");
-                    information.setContentText("Event has been modified correctly");
+                    information.setContentText("Event has been created correctly");
                     information.showAndWait();
                 }
         }
         observableEvents.setAll(eventManager.getEventList());
         eventMenu.refresh();
+    }
+
+    @FXML
+    private void createPlace() {
+        String id = newPlaceID.getText();
+        String name = newPlaceName.getText();
+        String address = newPlaceAddress.getText();
+
+        Place p = new Place(id, name, address);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Place Creation");
+        alert.setContentText("Are you sure you want to create the place:" + "\n" +
+                "ID: " + p.getIdPlace() + "\n" +
+                "Name: " + p.getName() + "\n" +
+                "Address: " + p.getAddress() + "\n");
+
+        Optional<ButtonType> okButton = alert.showAndWait();
+
+        if(okButton.isPresent() && okButton.get() == ButtonType.OK) {
+
+            boolean duplicated = false;
+
+            for(Place placeFor : EventManager.getInstance().getPlaceList()) {
+                if(placeFor.getIdPlace().equals(p.getIdPlace())){
+
+                    duplicated = true;
+
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Place ID already exist!");
+                    error.setContentText("The ID: " +p.getIdPlace()+ "Is already assigned to other place");
+                    error.showAndWait();
+                    break;
+                }
+            }
+            if(!duplicated){
+                adminController.addPlace(p);
+                Alert information = new Alert(Alert.AlertType.INFORMATION);
+                information.setTitle("Information");
+                information.setHeaderText("Succesfull!");
+                information.setContentText("Place has been created correctly");
+                information.showAndWait();
+            }
+        }
+        observablePlaces.setAll(eventManager.getPlaceList());
+        placeMenu.refresh();
     }
 
     @FXML
@@ -312,6 +466,32 @@ public class AdminView {
     }
 
     @FXML
+    private void searchPlace(){
+        String id = newPlaceID.getText();
+        Place placeSearched = adminController.searchPlaceById(id);
+
+        if(placeSearched != null){
+            Alert information = new Alert(Alert.AlertType.INFORMATION);
+            information.setTitle("Information");
+            information.setHeaderText("Place found!");
+            information.setContentText("Displaying place information: " + "\n" +
+                    "ID: " + placeSearched.getIdPlace() + "\n" +
+                    "Name: " + placeSearched.getName() + "\n" +
+                    "Address: " + placeSearched.getAddress() + "\n" +
+                    "Events: " + placeSearched.getEventList() +"\n" +
+                    "Zones: " + placeSearched.getZoneList());
+            information.show();
+        }
+        else{
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Place not found!");
+            error.setContentText("The ID: " +id+ " It does not match any place on the list");
+            error.show();
+        }
+    }
+
+    @FXML
     private void backMenu(ActionEvent actionEvent) throws IOException {
         Button button = (Button) actionEvent.getSource();
 
@@ -324,5 +504,47 @@ public class AdminView {
         stage.show();
         Stage currentStage = (Stage) button.getScene().getWindow();
         currentStage.close();
+    }
+
+    @FXML
+    private void showZoneList() {
+        String idPlace = newPlaceID.getText();
+
+        if (idPlace == null || idPlace.trim().isEmpty()) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Invalid ID!");
+            error.setContentText("Please enter a valid Place ID.");
+            error.showAndWait();
+            return;
+        }
+
+        boolean found = false;
+        for (Place place : eventManager.getPlaceList()) {
+            if (place.getIdPlace().equals(idPlace)) {
+                found = true;
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Info");
+                info.setHeaderText(
+                        "The following Place: " +
+                                place.getIdPlace() +
+                                " has the next zones."
+                );
+                info.setContentText(
+                        "Zone list: " + place.getZoneList()
+                );
+                info.showAndWait();
+                break;
+            }
+        }
+        if (!found) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Place ID not found!");
+            error.setContentText(
+                    "Make sure to specify a valid or existent ID"
+            );
+            error.showAndWait();
+        }
     }
 }

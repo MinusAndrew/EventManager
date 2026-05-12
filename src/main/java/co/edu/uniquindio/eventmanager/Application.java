@@ -31,10 +31,12 @@ public class Application extends javafx.application.Application {
         User user = new User("MinusAndrew", "andrew@aqua.me", "727", "pazitaTT");
         EventManager.getInstance().addUser(user);
         Zone zone = new Zone("as","ma",5,200);
-        Zone zone1 = new Zone("as","ew",3,4400);
+        Zone zone1 = new Zone("as2","ew",3,4400);
 
         Place place = new Place("2132","asdsa","asdaw");
-        Place place2 = new Place("2132","asdsa","asdaw");
+        place.addZone(zone);
+        place.addZone(zone1);
+        Place place2 = new Place("21323","asdsa","asdaw");
         EventManager.getInstance().addPlace(place);
         EventManager.getInstance().addPlace(place2);
 
@@ -59,6 +61,8 @@ public class Application extends javafx.application.Application {
                 EventType.THEATER,
                 EventPolicy.REFUND
         );
+        place.addEvent(event1);
+        place.addEvent(event2);
 
         Event event3 = new Event(
                 "EVT-003",

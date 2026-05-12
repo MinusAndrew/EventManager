@@ -13,7 +13,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
-@ToString
 @Getter
 @Setter
 public class Event {
@@ -43,5 +42,13 @@ public class Event {
                 ", Descripcion:" + description +
                 ", En la ciudad de " + city +
                 ", el dia " + date.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG,FormatStyle.SHORT)) + " no faltes!!!";
+    }
+
+    @Override
+    public String toString() {
+        return
+                        "   ID: " + idEvent + "\n" +
+                        "   Name: " + name + "\n" +
+                        "   Status: " + eventStatus + "\n"+"\n";
     }
 }
