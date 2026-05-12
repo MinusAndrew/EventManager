@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.eventmanager.viewController.modifyView.EventModify">
+   <children>
+      <Text fx:id="eventName" layoutX="26.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name: " wrappingWidth="96.13671875">
+         <font>
+            <Font size="15.0" />
+         </font></Text>
+      <Text fx:id="description" layoutX="26.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" wrappingWidth="96.13671875">
+         <font>
+            <Font size="15.0" />
+         </font></Text>
+      <Text fx:id="eventCity" layoutX="26.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City:" wrappingWidth="96.13671875">
+         <font>
+            <Font size="15.0" />
+         </font></Text>
+      <Text fx:id="eventDate" layoutX="25.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" wrappingWidth="180.13671875">
+         <font>
+            <Font size="15.0" />
+         </font></Text>
+      <Text fx:id="eventType" layoutX="26.0" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" wrappingWidth="180.13671875">
+         <font>
+            <Font size="15.0" />
+         </font></Text>
+      <Text fx:id="eventStatus" layoutX="26.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status:" wrappingWidth="180.13671875">
+         <font>
+            <Font size="15.0" />
+         </font></Text>
+      <Text fx:id="place" layoutX="26.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place:" wrappingWidth="96.13671875">
+         <font>
+            <Font size="15.0" />
+         </font></Text>
+      <Label fx:id="eventDescription" layoutX="110.0" layoutY="106.0" text="(...)">
+         <font>
+            <Font size="19.0" />
+         </font></Label>
+      <Label fx:id="eventPlace" layoutX="72.0" layoutY="175.0" text="(...)">
+         <font>
+            <Font size="19.0" />
+         </font></Label>
+      <Text fx:id="currentEvent" layoutX="13.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Event:" wrappingWidth="193.13671875">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Line fx:id="line2" endX="-27.0" endY="278.0" layoutX="239.0" layoutY="97.0" startX="-27.0" startY="-76.0" />
+      <Line fx:id="line1" endX="282.0" layoutX="110.0" layoutY="69.0" startX="-100.0" />
+      <Text fx:id="eventModified" layoutX="231.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Event Modified:" wrappingWidth="125.13671875">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="newName" layoutX="231.0" layoutY="74.0" promptText="Name" />
+      <TextField fx:id="newCity" layoutX="231.0" layoutY="140.0" promptText="City" />
+      <TextField fx:id="newDescription" layoutX="231.0" layoutY="108.0" promptText="Description" />
+      <ComboBox fx:id="newPlace" layoutX="231.0" layoutY="177.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" promptText="Place" />
+      <ComboBox fx:id="newType" layoutX="231.0" layoutY="285.0" prefWidth="150.0" promptText="Event Type" />
+      <ComboBox fx:id="newStatus" layoutX="231.0" layoutY="324.0" prefWidth="150.0" promptText="Event Status" />
+      <DatePicker fx:id="newDate" layoutX="219.0" layoutY="210.0" />
+      <TextField fx:id="newTime" layoutX="231.0" layoutY="245.0" promptText="Time: HH:mm" />
+      <Button fx:id="modifyButton" layoutX="279.0" layoutY="363.0" mnemonicParsing="false" text="Modify" />
+   </children>
+</AnchorPane>

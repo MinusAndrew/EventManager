@@ -17,11 +17,12 @@ import javax.crypto.*;
 
 @Getter
 @Setter
-public class User {
+public class User implements Observer{
     private String id, fullName, email, phoneNumber, password;
 
     private ArrayList<Purchase> purchaseList;
     private ArrayList<Purchase> cartList;
+    private boolean rootAccess = false;
 
     //All these variables are used to encrypt the password, thx.
     public static final KeyGenerator keygenerator;
@@ -34,6 +35,7 @@ public class User {
             throw new RuntimeException(e);
         }
     }
+    public void addPurchase(Purchase purchase){purchaseList.add(purchase);}
     public static final SecretKey myDesKey = keygenerator.generateKey();
 
     public User(String fullName, String email, String phoneNumber, String password) {
@@ -126,11 +128,51 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+        return
+                        "   ID: " + id + "\n" +
+                        "   Name: " + fullName + "\n" +
+                        "   Email: " + email;
+    }
+
+    @Override
+    public String update(String message) {
+        System.out.println(fullName + " recibio una nueva notificacion: " + message);
+        return message;
+    }
+
+
+    public String generateReceipt(){
+        //PurchaseList have a: ticketlist and have a:
+        // String idTicket, double finalCost, Event theEvent, Zone theZone, Chair theChair, TicketStatus ticketStatus
+        String receipt;
+        receipt =  "____________________________\n" +
+                    "     Reporte de compras \n"+
+                    "____________________________\n";
+        for(Purchase purchase : purchaseList){
+            receipt += "Compra N°: "+ purchase.getIdPurchase() + "\n Creada el: "+ purchase.getDateCreated() +
+                    "\n Se adquirieron los siguientes tiquetes: \n";
+            for(Ticket t : purchase.getTicketList()){
+                receipt += "Ticket N°: " + t.getIdTicket() + "\n Para el evento de " + t.getTheEvent().getName() +
+                        " en la zona " + t.getTheEvent().getThePlace() + "con la silla N°: " + t.getTheChair().getIdChair()
+                        + "" + "\n \n";
+
+            }
+            receipt += "______________________________";
+
+        }
+
+
+
+
+
+
+
+
+
+        ;
+
+
+
+        return receipt;
     }
 }

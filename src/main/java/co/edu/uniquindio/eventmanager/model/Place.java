@@ -6,7 +6,6 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 
-@ToString
 @Getter
 @Setter
 public class Place implements Composite {
@@ -21,6 +20,18 @@ public class Place implements Composite {
         this.address = address;
         this.eventList = new ArrayList<>();
         this.zoneList = new ArrayList<>();
+    }
+
+    public void addEvent(Event event){
+        eventList.add(event);
+    }
+
+    public void removeEvent(String eventID){
+        for(Event e : eventList){
+            if(e.getIdEvent().equals(eventID)){
+                eventList.remove(e);
+            }
+        }
     }
 
     public void addZone(Composite zone){
@@ -42,5 +53,13 @@ public class Place implements Composite {
             c.addAll(zone.getAvailableChairs());
         }
         return c;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "   ID: " + idPlace + "\n" +
+                "   Name: " + name + "\n" +
+                "   Address: " + address + "\n";
     }
 }
