@@ -8,7 +8,6 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 
-@ToString
 @Getter
 @Setter
 @Builder
@@ -50,5 +49,18 @@ public class Zone implements Composite {
         }
         return c;
     }
+
+    @Override
+    public String toString() {
+        return
+                        "   ID: " + idZone + "\n" +
+                        "   Name: " + name + "\n" +
+                        "   Capacity: " + capacity + "\n"+"\n";
+    }
+
+
+    /*
+    setProperties();
+     */
 
 }

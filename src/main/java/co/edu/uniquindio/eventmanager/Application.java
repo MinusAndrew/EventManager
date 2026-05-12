@@ -2,9 +2,7 @@ package co.edu.uniquindio.eventmanager;
 
 import co.edu.uniquindio.eventmanager.controller.AdminController;
 import co.edu.uniquindio.eventmanager.model.*;
-import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
-import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
-import co.edu.uniquindio.eventmanager.model.Enums.EventType;
+import co.edu.uniquindio.eventmanager.model.Enums.*;
 import co.edu.uniquindio.eventmanager.viewController.LoginView;
 import javafx.stage.Stage;
 
@@ -30,11 +28,20 @@ public class Application extends javafx.application.Application {
         // Admin admin = new Admin("Juan,)
         User user = new User("MinusAndrew", "andrew@aqua.me", "727", "pazitaTT");
         EventManager.getInstance().addUser(user);
-        Zone zone = new Zone("as","ma",5,200);
-        Zone zone1 = new Zone("as","ew",3,4400);
+        Zone zone = Zone.builder().idZone("Z-01").name("VIP / Front Stage").capacity(50).startingPrice(60000.0).build();
+        for (int i = 1; i <= zone.getCapacity(); i++) {
+            zone.addChair(new Chair("V" + i, (i - 1) / 10 + 1, (i - 1) % 10 + 1, ChairStatus.AVAILABLE));
+        }
+        Zone zone1 = Zone.builder().idZone("Z-02").name("General Admission").capacity(15).startingPrice(42000.0).build();
+
+        Chair chair1 = new Chair("123",9,1, ChairStatus.AVAILABLE);
+        chair1.setTheZone(zone1);
+        zone1.addChair(chair1);
 
         Place place = new Place("2132","asdsa","asdaw");
-        Place place2 = new Place("2132","asdsa","asdaw");
+        place.addZone(zone);
+        place.addZone(zone1);
+        Place place2 = new Place("21323","asdsa","asdaw");
         EventManager.getInstance().addPlace(place);
         EventManager.getInstance().addPlace(place2);
 
@@ -59,6 +66,8 @@ public class Application extends javafx.application.Application {
                 EventType.THEATER,
                 EventPolicy.REFUND
         );
+        place.addEvent(event1);
+        place.addEvent(event2);
 
         Event event3 = new Event(
                 "EVT-003",
@@ -103,6 +112,8 @@ public class Application extends javafx.application.Application {
         Admin admin = new Admin("Jacobo","esau@gmail.com","6767","iwtkms");
         Proxy proxy = new Proxy(adminController,admin);
 
+        Purchase purchase = new Purchase(user, 100, "132",null, PaymentType.APPLE);
+        user.addPurchase(purchase);
         System.out.println(EventManager.getInstance().getEventList().size());
     }
 }

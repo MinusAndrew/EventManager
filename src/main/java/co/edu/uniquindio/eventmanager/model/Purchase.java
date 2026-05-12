@@ -1,5 +1,6 @@
 package co.edu.uniquindio.eventmanager.model;
 import co.edu.uniquindio.eventmanager.model.Enums.PaymentType;
+import co.edu.uniquindio.eventmanager.model.Enums.PurchaseStatus;
 import co.edu.uniquindio.eventmanager.model.Interfaces.PurchaseClone;
 import co.edu.uniquindio.eventmanager.model.Interfaces.PurchaseComponent;
 import lombok.*;
@@ -17,6 +18,7 @@ public class Purchase implements PurchaseClone, PurchaseComponent {
     private ArrayList<Ticket> ticketList;
     private final User theUser;
     private PaymentType paymentType;
+    private PurchaseStatus purchaseStatus;
     private ArrayList<String> additionalServices;
 
     public Purchase(User theUser, double total, String idPurchase, ArrayList<Ticket> ticketList, PaymentType paymentType) {
@@ -26,6 +28,7 @@ public class Purchase implements PurchaseClone, PurchaseComponent {
         this.dateCreated = LocalDateTime.now();
         this.idPurchase = idPurchase;
         this.paymentType = paymentType;
+        this.purchaseStatus = PurchaseStatus.CREATED;
         this.additionalServices = new ArrayList<>();
     }
 

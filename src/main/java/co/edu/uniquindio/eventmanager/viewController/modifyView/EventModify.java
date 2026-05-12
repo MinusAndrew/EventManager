@@ -116,6 +116,7 @@ public class EventModify {
             information.setTitle("Information");
             information.setHeaderText("Succesfull!");
             information.setContentText("Event has been modified correctly");
+            information.showAndWait();
         }
         Stage stage = (Stage) modifyButton.getScene().getWindow();
         stage.close();
