@@ -111,6 +111,8 @@ public class Application extends javafx.application.Application {
         // Cancel one event for the chart
         event5.setEventStatus(EventStatus.CANCELLED);
 
+
+
         // Create mock Tickets using Builder
         Ticket t1 = Ticket.builder().idTicket("T1").finalCost(100).theEvent(event1).theZone(zone).ticketStatus(TicketStatus.ACTIVE).build();
         Ticket t2 = Ticket.builder().idTicket("T2").finalCost(150).theEvent(event2).theZone(zone1).ticketStatus(TicketStatus.ACTIVE).build();
@@ -131,23 +133,27 @@ public class Application extends javafx.application.Application {
         EventManager.getInstance().addPurchase(p1);
         EventManager.getInstance().addPurchase(p2);
 
+
+
         // Add some more to make charts look nice
-        for(int i=0; i<15; i++){
+        for(int i=0; i<5; i++){
              ArrayList<Ticket> tl = new ArrayList<>();
-             tl.add(Ticket.builder().idTicket("TX"+i).finalCost(100).theEvent(event3).theZone(zone1).ticketStatus(TicketStatus.ACTIVE).build());
+             Ticket ticket = Ticket.builder().idTicket("TX"+i).finalCost(100).theEvent(event3).theZone(zone1).ticketStatus(TicketStatus.ACTIVE).build();
+             tl.add(ticket);
              Purchase px = new Purchase(user, 100, "PX"+i, tl, PaymentType.APPLE);
              px.setDateCreated(LocalDateTime.now().minusMonths(i%3));
              if(i%2==0) px.getAdditionalServices().add("Parking");
+             user.addPurchase(px);
              EventManager.getInstance().addPurchase(px);
-            user.getPurchaseList().add(px);
+
         }
 
         AdminController adminController = new AdminController();
         Admin admin = new Admin("Jacobo","esau@gmail.com","6767","iwtkms");
         Proxy proxy = new Proxy(adminController,admin);
 
-        Purchase purchase = new Purchase(user, 100, "132",null, PaymentType.APPLE);
-        user.addPurchase(purchase);
+    //    Purchase purchase = new Purchase(user, 100, "132",null, PaymentType.APPLE);
+      //  user.addPurchase(purchase);
         System.out.println(EventManager.getInstance().getEventList().size());
         EventManager.getInstance().addUser(admin);
     }
