@@ -1,6 +1,5 @@
 package co.edu.uniquindio.eventmanager.viewController.modifyView;
 
-import co.edu.uniquindio.eventmanager.controller.AdminController;
 import co.edu.uniquindio.eventmanager.controller.PlaceController;
 import co.edu.uniquindio.eventmanager.model.Composite;
 import co.edu.uniquindio.eventmanager.model.Event;
@@ -30,8 +29,6 @@ public class PlaceModify {
 
     @FXML
     private Line line1, line2;
-
-    private AdminController ac = new AdminController();
 
     private Place place;
 
@@ -125,6 +122,7 @@ public class PlaceModify {
             information.setTitle("Information");
             information.setHeaderText("Succesfull!");
             information.setContentText("Place has been modified correctly");
+            information.showAndWait();
         }
         Stage stage = (Stage) modifyButton.getScene().getWindow();
         stage.close();

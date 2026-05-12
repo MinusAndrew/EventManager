@@ -2,6 +2,7 @@ package co.edu.uniquindio.eventmanager;
 
 import co.edu.uniquindio.eventmanager.controller.AdminController;
 import co.edu.uniquindio.eventmanager.model.*;
+import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventType;
@@ -32,6 +33,8 @@ public class Application extends javafx.application.Application {
         EventManager.getInstance().addUser(user);
         Zone zone = new Zone("as","ma",5,200);
         Zone zone1 = new Zone("as2","ew",3,4400);
+        Chair chair1 = new Chair("123",9,1, ChairStatus.AVAILABLE);
+        zone1.addChair(chair1);
 
         Place place = new Place("2132","asdsa","asdaw");
         place.addZone(zone);

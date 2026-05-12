@@ -2,13 +2,13 @@ package co.edu.uniquindio.eventmanager.viewController;
 
 import co.edu.uniquindio.eventmanager.Application;
 import co.edu.uniquindio.eventmanager.controller.AdminController;
+import co.edu.uniquindio.eventmanager.controller.ZoneController;
+import co.edu.uniquindio.eventmanager.model.*;
 import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
 import co.edu.uniquindio.eventmanager.model.Enums.EventType;
-import co.edu.uniquindio.eventmanager.model.Event;
-import co.edu.uniquindio.eventmanager.model.EventManager;
-import co.edu.uniquindio.eventmanager.model.Place;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.EventModify;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.PlaceModify;
+import co.edu.uniquindio.eventmanager.viewController.modifyView.ZoneModify;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,10 +34,12 @@ public class AdminView {
 
     @FXML
     private TextField newEventID, newEventName, newEventDescription, newEventCity, newEventTime,
-                      newPlaceID, newPlaceName, newPlaceAddress;
+                      newPlaceID, newPlaceName, newPlaceAddress,
+                      newZoneID, newZoneName, newZoneCapacity, newZonePrice;
+
 
     @FXML
-    private ComboBox<Place> newEventPlace;
+    private ComboBox<Place> newEventPlace, zoneThePlace;
 
     @FXML
     private ComboBox<EventType>  newEventType;
@@ -49,7 +51,7 @@ public class AdminView {
     private DatePicker newEventDate;
 
     @FXML
-    private TableView eventMenu, placeMenu;
+    private TableView eventMenu, placeMenu, zoneMenu;
 
     @FXML
     private TableColumn<Event, String> eventID;
@@ -66,22 +68,46 @@ public class AdminView {
     private TableColumn<Place, Integer> placeAddress;
 
     @FXML
+    private TableColumn<Zone, String> zoneID;
+    @FXML
+    private TableColumn<Zone, String> zoneName;
+    @FXML
+    private TableColumn<Zone, Integer> zoneCapacity;
+
+    @FXML
     private Button addEventButton, searchEventButton, backButton,
-                   placeZoneList, addPlaceButton, searchPlaceButton, backButton2;
+                   placeZoneList, addPlaceButton, searchPlaceButton, backButton2,
+                   addZoneButton, searchZoneButton, zoneChairList, backButton3;
 
     private AdminController adminController = new AdminController();
 
     private EventManager eventManager = EventManager.getInstance();
 
+    private Place currentPlace;
+
     ObservableList<Event> observableEvents = FXCollections.observableArrayList(eventManager.getEventList());
     ObservableList<Place> observablePlaces = FXCollections.observableArrayList(eventManager.getPlaceList());
+    ObservableList<Composite> observableZones = FXCollections.observableArrayList();
 
     @FXML
     private void initialize(){
 
+        zoneThePlace.setOnAction(e -> {
+
+            currentPlace = zoneThePlace.getValue();
+
+            if (currentPlace != null) {
+
+                observableZones.setAll(currentPlace.getZoneList());
+
+                zoneMenu.setItems(observableZones);
+            }
+        });
+
         newEventPlace.setItems(observablePlaces);
         newEventType.getItems().addAll(EventType.values());
         newEventPolicy.getItems().addAll(EventPolicy.values());
+        zoneThePlace.setItems(observablePlaces);
 
         eventID.setCellValueFactory(new PropertyValueFactory<>("idEvent"));
         eventName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -91,13 +117,17 @@ public class AdminView {
         placeName.setCellValueFactory(new PropertyValueFactory<>("name"));
         placeAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        eventID.setReorderable(false);placeID.setReorderable(false);
-        eventName.setReorderable(false);placeName.setReorderable(false);
-        eventDate.setReorderable(false);placeAddress.setReorderable(false);
+        zoneID.setCellValueFactory(new PropertyValueFactory<>("idZone"));
+        zoneName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        zoneCapacity.setCellValueFactory(new PropertyValueFactory<>("capacity"));
 
-        eventID.setStyle("-fx-alignment: CENTER;");placeID.setStyle("-fx-alignment: CENTER;");
-        eventName.setStyle("-fx-alignment: CENTER;");placeName.setStyle("-fx-alignment: CENTER;");
-        eventDate.setStyle("-fx-alignment: CENTER;");placeAddress.setStyle("-fx-alignment: CENTER;");
+        eventID.setReorderable(false);placeID.setReorderable(false);zoneID.setReorderable(false);
+        eventName.setReorderable(false);placeName.setReorderable(false);zoneName.setReorderable(false);
+        eventDate.setReorderable(false);placeAddress.setReorderable(false);zoneCapacity.setReorderable(false);
+
+        eventID.setStyle("-fx-alignment: CENTER;");placeID.setStyle("-fx-alignment: CENTER;");zoneID.setStyle("-fx-alignment: CENTER;");
+        eventName.setStyle("-fx-alignment: CENTER;");placeName.setStyle("-fx-alignment: CENTER;");zoneName.setStyle("-fx-alignment: CENTER;");
+        eventDate.setStyle("-fx-alignment: CENTER;");placeAddress.setStyle("-fx-alignment: CENTER;");zoneCapacity.setStyle("-fx-alignment: CENTER;");
 
         eventMenu.setItems(observableEvents);
         eventMenu.setRowFactory(tv -> {
@@ -159,7 +189,7 @@ public class AdminView {
 
                     Stage stage = new Stage();
                     stage.setResizable(false);
-                    stage.setTitle("Modificar Evento");
+                    stage.setTitle("Event Modify");
                     stage.setScene(new Scene(root));
                     stage.showAndWait();
 
@@ -199,7 +229,6 @@ public class AdminView {
                             .then((ContextMenu) null)
                             .otherwise(menu)
             );
-
             return row;
         });
 
@@ -261,7 +290,7 @@ public class AdminView {
 
                     Stage stage = new Stage();
                     stage.setResizable(false);
-                    stage.setTitle("Modificar Evento");
+                    stage.setTitle("Place Modify");
                     stage.setScene(new Scene(root));
                     stage.showAndWait();
 
@@ -298,16 +327,115 @@ public class AdminView {
                             .then((ContextMenu) null)
                             .otherwise(menu)
             );
+            return row;
+        });
 
+        zoneMenu.setRowFactory(tv ->{
+            TableRow<Zone> row = new TableRow<>();
+
+            ContextMenu menu = new ContextMenu();
+
+            MenuItem delete = new MenuItem("Delete");
+            MenuItem modify = new MenuItem("Modify");
+            MenuItem read = new MenuItem("Read");
+
+            delete.setOnAction(e -> {
+
+                Zone zone = row.getItem();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText("Zone Deletion");
+                alert.setContentText(
+                        "Are you sure you want to delete the zone:" + "\n" +
+                                "ID: " + zone.getIdZone() + "\n" +
+                                "Name: " + zone.getName()
+                );
+
+                Optional<ButtonType> button = alert.showAndWait();
+
+                if (button.isPresent() && button.get() == ButtonType.OK) {
+                    Place currentPlace = zoneThePlace.getValue();
+                    if (currentPlace != null) {
+                        currentPlace.getZoneList().remove(zone);
+                        observableZones.remove(zone);
+
+                        Alert information = new Alert(Alert.AlertType.INFORMATION);
+                        information.setTitle("Information");
+                        information.setHeaderText("Successful!");
+                        information.setContentText(
+                                "The following zone has been removed:" + "\n" +
+                                        "ID: " + zone.getIdZone() + "\n" +
+                                        "Name: " + zone.getName()
+                        );
+                        information.show();
+                    }
+                }
+            });
+            modify.setOnAction(e -> {
+                Zone zone = row.getItem();
+
+                try {
+
+                    FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("zoneModify.fxml"));
+
+                    Parent root = fxmlLoader.load();
+
+                    ZoneModify controller = fxmlLoader.getController();
+
+                    controller.setZone(zone);
+
+                    Stage stage = new Stage();
+                    stage.setResizable(false);
+                    stage.setTitle("Zone Modify");
+                    stage.setScene(new Scene(root));
+                    stage.showAndWait();
+
+                    observablePlaces.setAll(eventManager.getPlaceList());
+                    eventMenu.refresh();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
+            read.setOnAction(e -> {
+
+                Zone zone = row.getItem();
+
+                Alert information = new Alert(Alert.AlertType.INFORMATION);
+
+                information.setTitle("Information");
+                information.setHeaderText(zone.getName());
+
+                information.setContentText(
+                        "Displaying zone information: " + "\n" +
+                                "ID: " + zone.getIdZone() + "\n" +
+                                "Name: " + zone.getName() + "\n" +
+                                "Capacity: " + zone.getCapacity() + "\n" +
+                                "Price: " + zone.getStartingPrice() + "\n" +
+                                "Chair list: " + zone.getChairList() + "\n"
+                );
+
+                information.show();
+            });
+
+            menu.getItems().addAll(delete, modify, read);
+            row.contextMenuProperty().bind(
+                    Bindings.when(row.emptyProperty())
+                            .then((ContextMenu) null)
+                            .otherwise(menu)
+            );
             return row;
         });
 
         addEventButton.setOnAction(e -> createEvent());
         addPlaceButton.setOnAction(e -> createPlace());
+        addZoneButton.setOnAction(e-> createZone());
 
         searchEventButton.setOnAction(e -> searchEvent());
         searchPlaceButton.setOnAction(e -> searchPlace());
+        searchZoneButton.setOnAction(e-> searchZone());
         placeZoneList.setOnAction(e-> showZoneList());
+        zoneChairList.setOnAction(e-> showChairList());
 
         backButton.setOnAction(e-> {
             try {
@@ -317,6 +445,13 @@ public class AdminView {
             }
         });
         backButton2.setOnAction(e-> {
+            try {
+                backMenu(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        backButton3.setOnAction(e-> {
             try {
                 backMenu(e);
             } catch (IOException ex) {
@@ -436,6 +571,60 @@ public class AdminView {
     }
 
     @FXML
+    private void createZone(){
+        String id = newZoneID.getText();
+        String name = newZoneName.getText();
+        int capacity = Integer.parseInt(newZoneCapacity.getText());
+        double price = Double.parseDouble(newZonePrice.getText());
+
+        Zone newZone = new Zone(id, name, capacity, price);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Zone Creation");
+        alert.setContentText("Are you sure you want to create the zone: " + "\n" +
+                "ID: " + newZone.getIdZone() + "\n" +
+                "Name: " + newZone.getName() + "\n" +
+                "Capacity: " + newZone.getCapacity() + "\n" +
+                "Starting Price: " + newZone.getStartingPrice());
+
+        Optional<ButtonType> okButton = alert.showAndWait();
+        if(okButton.isPresent() && okButton.get() == ButtonType.OK) {
+            boolean duplicated = false;
+
+            for (Composite c : currentPlace.getZoneList()) {
+                if (c instanceof Zone) {
+                    Zone zone = (Zone) c;
+                    if (zone.getIdZone().equals(newZone.getIdZone())) {
+                        duplicated = true;
+
+                        Alert error = new Alert(Alert.AlertType.ERROR);
+                        error.setTitle("Error");
+                        error.setHeaderText("Zone ID already exists!");
+                        error.setContentText(
+                                "The ID: " + newZone.getIdZone() +
+                                        " is already assigned to another zone"
+                        );
+                        error.showAndWait();
+                        break;
+                    }
+                }
+            }
+
+            if(!duplicated){
+                ZoneController.addZone(newZone, currentPlace);
+                Alert information = new Alert(Alert.AlertType.INFORMATION);
+                information.setTitle("Information");
+                information.setHeaderText("Succesfull!");
+                information.setContentText("Zone has been created correctly in the Place: "+currentPlace.getIdPlace());
+                information.showAndWait();
+            }
+        }
+        observableZones.setAll(currentPlace.getZoneList());
+        zoneMenu.refresh();
+    }
+
+    @FXML
     private void searchEvent(){
         String id = newEventID.getText();
         Event eventSearched = adminController.searchEventById(id);
@@ -492,6 +681,32 @@ public class AdminView {
     }
 
     @FXML
+    private void searchZone(){
+        String id = newZoneID.getText();
+        Zone searchedZone = adminController.searchZoneById(id, currentPlace);
+
+        if(searchedZone != null){
+            Alert information = new Alert(Alert.AlertType.INFORMATION);
+            information.setTitle("Information");
+            information.setHeaderText("Zone found!");
+            information.setContentText("Displaying zone information: " + "\n" +
+                    "ID: " + searchedZone.getIdZone() + "\n" +
+                    "Name: " + searchedZone.getName() + "\n" +
+                    "Capacity: " + searchedZone.getCapacity() + "\n" +
+                    "Starting Price: " + searchedZone.getStartingPrice() +"\n" +
+                    "Chair list: " + searchedZone.getChairList());
+            information.show();
+        }
+        else{
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Zone not found!");
+            error.setContentText("The ID: " +id+ " It does not match any zone on the place list");
+            error.show();
+        }
+    }
+
+    @FXML
     private void backMenu(ActionEvent actionEvent) throws IOException {
         Button button = (Button) actionEvent.getSource();
 
@@ -541,6 +756,53 @@ public class AdminView {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Error");
             error.setHeaderText("Place ID not found!");
+            error.setContentText(
+                    "Make sure to specify a valid or existent ID"
+            );
+            error.showAndWait();
+        }
+    }
+
+    @FXML
+    private void showChairList(){
+        String idZone = newZoneID.getText();
+
+        if (idZone == null || idZone.trim().isEmpty()) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Invalid ID!");
+            error.setContentText("Please enter a valid Zone ID.");
+            error.showAndWait();
+            return;
+        }
+
+        boolean found = false;
+        for (Composite c : currentPlace.getZoneList()) {
+                if(c instanceof Zone) {
+
+                    Zone zone1 =  (Zone) c;
+
+                    if(zone1.getIdZone().equals(idZone)) {
+                        found = true;
+                        Alert info = new Alert(Alert.AlertType.INFORMATION);
+                        info.setTitle("Info");
+                        info.setHeaderText(
+                                "The following zone: " +
+                                        ((Zone) c).getIdZone() +
+                                        " has the next chairs."
+                        );
+                        info.setContentText(
+                                "Chair list: " + ((Zone) c).getChairList()
+                        );
+                        info.showAndWait();
+                        break;
+                    }
+                }
+        }
+        if (!found) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Zone ID not found!");
             error.setContentText(
                     "Make sure to specify a valid or existent ID"
             );

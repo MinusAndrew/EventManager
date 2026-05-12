@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@ToString
 @Setter
 @Getter
 public class Chair {
@@ -25,4 +24,12 @@ public class Chair {
     /*
     changeStatus();
      */
+
+    @Override
+    public String toString() {
+        return
+                        "   ID: " + idChair + "\n" +
+                        "   Row: " + row + "\n" +
+                        "   Number: " + number + "\n";
+    }
 }
