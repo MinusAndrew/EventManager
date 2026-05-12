@@ -29,6 +29,7 @@ public class User implements Observer{
             throw new RuntimeException(e);
         }
     }
+    public void addPurchase(Purchase purchase){purchaseList.add(purchase);}
     public static final SecretKey myDesKey = keygenerator.generateKey();
 
     public User(String fullName, String email, String phoneNumber, String password) {
@@ -105,13 +106,10 @@ public class User implements Observer{
 
     @Override
     public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", purchaseList=" + purchaseList +
-                '}';
+        return
+                        "   ID: " + id + "\n" +
+                        "   Name: " + fullName + "\n" +
+                        "   Email: " + email;
     }
 
     @Override

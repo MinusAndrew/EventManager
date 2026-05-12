@@ -3,11 +3,13 @@ package co.edu.uniquindio.eventmanager.viewController;
 import co.edu.uniquindio.eventmanager.Application;
 import co.edu.uniquindio.eventmanager.controller.AdminController;
 import co.edu.uniquindio.eventmanager.controller.ChairController;
+import co.edu.uniquindio.eventmanager.controller.PurchaseController;
 import co.edu.uniquindio.eventmanager.controller.ZoneController;
 import co.edu.uniquindio.eventmanager.model.*;
 import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
 import co.edu.uniquindio.eventmanager.model.Enums.EventType;
+import co.edu.uniquindio.eventmanager.model.Enums.PurchaseStatus;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.ChairModify;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.EventModify;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.PlaceModify;
@@ -39,7 +41,8 @@ public class AdminView {
     private TextField newEventID, newEventName, newEventDescription, newEventCity, newEventTime,
                       newPlaceID, newPlaceName, newPlaceAddress,
                       newZoneID, newZoneName, newZoneCapacity, newZonePrice,
-                      newChairID, newChairRow, newChairNumber;
+                      newChairID, newChairRow, newChairNumber,
+                      newPurchaseID;
 
 
     @FXML
@@ -58,10 +61,13 @@ public class AdminView {
     private ComboBox<ChairStatus> newChairStatus;
 
     @FXML
+    private ComboBox<User> purchaseTheUser;
+
+    @FXML
     private DatePicker newEventDate;
 
     @FXML
-    private TableView eventMenu, placeMenu, zoneMenu, chairMenu;
+    private TableView eventMenu, placeMenu, zoneMenu, chairMenu, purchaseMenu;
 
     @FXML
     private TableColumn<Event, String> eventID;
@@ -92,10 +98,20 @@ public class AdminView {
     private TableColumn<Chair, Integer> chairNumber;
 
     @FXML
+    private TableColumn<Purchase, String> purchaseID;
+    @FXML
+    private TableColumn<Purchase, LocalDateTime> purchaseDate;
+    @FXML
+    private TableColumn<Purchase, Double> purchaseTotal;
+    @FXML
+    private TableColumn<Purchase, PurchaseStatus> purchaseStatus;
+
+    @FXML
     private Button addEventButton, searchEventButton, backButton,
                    placeZoneList, addPlaceButton, searchPlaceButton, backButton2,
                    addZoneButton, searchZoneButton, zoneChairList, backButton3,
-                   addChairButton, searchChairButton, backButton4;
+                   addChairButton, searchChairButton, backButton4,
+                   showUserButton, searchPurchaseButton, backButton5;
 
 
     private AdminController adminController = new AdminController();
@@ -103,11 +119,14 @@ public class AdminView {
 
     private Place currentPlace;
     private Zone currentZone;
+    private User currentUser;
 
+    ObservableList<User> observableUsers = FXCollections.observableArrayList(eventManager.getUserList());
     ObservableList<Event> observableEvents = FXCollections.observableArrayList(eventManager.getEventList());
     ObservableList<Place> observablePlaces = FXCollections.observableArrayList(eventManager.getPlaceList());
     ObservableList<Composite> observableZones = FXCollections.observableArrayList();
     ObservableList<Chair> observableChairs = FXCollections.observableArrayList();
+    ObservableList<Purchase> observablePurchases = FXCollections.observableArrayList();
 
     @FXML
     private void initialize(){
@@ -146,6 +165,14 @@ public class AdminView {
             }
         });
 
+        purchaseTheUser.setOnAction(e->{
+            currentUser = purchaseTheUser.getValue();
+            if(currentUser!=null){
+                observablePurchases.setAll(currentUser.getPurchaseList());
+                purchaseMenu.setItems(observablePurchases);
+            }
+        });
+
 
         newEventPlace.setItems(observablePlaces);
         newEventType.getItems().addAll(EventType.values());
@@ -153,6 +180,7 @@ public class AdminView {
         newChairStatus.getItems().addAll(ChairStatus.values());
         zoneThePlace.setItems(observablePlaces);
         chairThePlace.setItems(observablePlaces);
+        purchaseTheUser.setItems(observableUsers);
 
         eventID.setCellValueFactory(new PropertyValueFactory<>("idEvent"));
         eventName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -170,17 +198,23 @@ public class AdminView {
         chairRow.setCellValueFactory(new PropertyValueFactory<>("row"));
         chairNumber.setCellValueFactory(new PropertyValueFactory<>("number"));
 
+        purchaseID.setCellValueFactory(new PropertyValueFactory<>("idPurchase"));
+        purchaseDate.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
+        purchaseTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+        purchaseStatus.setCellValueFactory(new PropertyValueFactory<>("purchaseStatus"));
+
         //Format Preferences
-        {eventID.setReorderable(false);placeID.setReorderable(false);zoneID.setReorderable(false);chairID.setReorderable(false);
-        eventName.setReorderable(false);placeName.setReorderable(false);zoneName.setReorderable(false);chairRow.setReorderable(false);
-        eventDate.setReorderable(false);placeAddress.setReorderable(false);zoneCapacity.setReorderable(false);chairNumber.setReorderable(false);
+        {eventID.setReorderable(false);placeID.setReorderable(false);zoneID.setReorderable(false);chairID.setReorderable(false);purchaseID.setReorderable(false);purchaseTotal.setReorderable(false);
+        eventName.setReorderable(false);placeName.setReorderable(false);zoneName.setReorderable(false);chairRow.setReorderable(false);purchaseDate.setReorderable(false);
+        eventDate.setReorderable(false);placeAddress.setReorderable(false);zoneCapacity.setReorderable(false);chairNumber.setReorderable(false);purchaseStatus.setReorderable(false);
 
         eventID.setStyle("-fx-alignment: CENTER;");placeID.setStyle("-fx-alignment: CENTER;");zoneID.setStyle("-fx-alignment: CENTER;");
         chairID.setStyle("-fx-alignment: CENTER;");
         eventName.setStyle("-fx-alignment: CENTER;");placeName.setStyle("-fx-alignment: CENTER;");zoneName.setStyle("-fx-alignment: CENTER;");
         chairRow.setStyle("-fx-alignment: CENTER;");
         eventDate.setStyle("-fx-alignment: CENTER;");placeAddress.setStyle("-fx-alignment: CENTER;");zoneCapacity.setStyle("-fx-alignment: CENTER;");
-        chairRow.setStyle("-fx-alignment: CENTER;");}
+        chairRow.setStyle("-fx-alignment: CENTER;");
+        purchaseID.setStyle("-fx-alignment: CENTER;");purchaseTotal.setStyle("-fx-alignment: CENTER;");purchaseDate.setStyle("-fx-alignment: CENTER;");purchaseStatus.setStyle("-fx-alignment: CENTER;");}
 
         eventMenu.setItems(observableEvents);
         eventMenu.setRowFactory(tv -> {
@@ -594,6 +628,58 @@ public class AdminView {
             return row;
         });
 
+        purchaseMenu.setRowFactory(tv ->{
+            TableRow<Purchase> row = new TableRow<>();
+
+            ContextMenu menu = new ContextMenu();
+
+            MenuItem cancel = new MenuItem("Cancel");
+            MenuItem refund = new MenuItem("Refund");
+            MenuItem read = new MenuItem("Read");
+
+            cancel.setOnAction(e->{
+                Purchase purchase = row.getItem();
+                purchase.setPurchaseStatus(PurchaseStatus.CANCELED);
+                purchaseMenu.setItems(observablePurchases);
+                purchaseMenu.refresh();
+            });
+
+            refund.setOnAction(e->{
+                Purchase purchase = row.getItem();
+                purchase.setPurchaseStatus(PurchaseStatus.REFUNDED);
+                purchaseMenu.setItems(observablePurchases);
+                purchaseMenu.refresh();
+            });
+
+            read.setOnAction(e -> {
+
+                Purchase purchase = row.getItem();
+
+                Alert information = new Alert(Alert.AlertType.INFORMATION);
+
+                information.setTitle("Information");
+                information.setHeaderText("Reading Purchase: "+purchase.getIdPurchase());
+                information.setContentText(
+                        "Displaying chair information: " + "\n" +
+                                "ID: " + purchase.getIdPurchase() + "\n" +
+                                "Date: " + purchase.getDateCreated().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG,FormatStyle.SHORT)) + "\n" +
+                                "Total: " + purchase.getTotal() + "\n" +
+                                "Tickets: " + purchase.getTicketList() + "\n" +
+                                "User: " + purchase.getTheUser() + "\n"+
+                                "Payment Type: "+ purchase.getPaymentType() + "\n" +
+                                "Purchase Status: "+ purchase.getPurchaseStatus());
+                information.show();
+            });
+
+            menu.getItems().addAll(cancel, refund, read);
+            row.contextMenuProperty().bind(
+                    Bindings.when(row.emptyProperty())
+                            .then((ContextMenu) null)
+                            .otherwise(menu)
+            );
+            return row;
+        });
+
         addEventButton.setOnAction(e -> createEvent());
         addPlaceButton.setOnAction(e -> createPlace());
         addZoneButton.setOnAction(e-> createZone());
@@ -603,9 +689,11 @@ public class AdminView {
         searchPlaceButton.setOnAction(e -> searchPlace());
         searchZoneButton.setOnAction(e-> searchZone());
         searchChairButton.setOnAction(e-> searchChair());
+        searchPurchaseButton.setOnAction(e-> searchPurchase());
 
         placeZoneList.setOnAction(e-> showZoneList());
         zoneChairList.setOnAction(e-> showChairList());
+        showUserButton.setOnAction(e-> showUser());
 
 
         backButton.setOnAction(e-> {
@@ -630,6 +718,13 @@ public class AdminView {
             }
         });
         backButton4.setOnAction(e-> {
+            try {
+                backMenu(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        backButton5.setOnAction(e-> {
             try {
                 backMenu(e);
             } catch (IOException ex) {
@@ -962,6 +1057,36 @@ public class AdminView {
     }
 
     @FXML
+    private void searchPurchase(){
+        String id = newPurchaseID.getText();
+        Purchase searchedPurchase = PurchaseController.searchPurchaseById(id);
+
+        if(searchedPurchase != null){
+            Alert information = new Alert(Alert.AlertType.INFORMATION);
+
+            information.setTitle("Information");
+            information.setHeaderText("Purchase Found!");
+            information.setContentText(
+                    "Displaying purchase information: " + "\n" +
+                            "ID: " + searchedPurchase.getIdPurchase() + "\n" +
+                            "Date: " + searchedPurchase.getDateCreated().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG,FormatStyle.SHORT)) + "\n" +
+                            "Total: " + searchedPurchase.getTotal() + "\n" +
+                            "Tickets: " + searchedPurchase.getTicketList() + "\n" +
+                            "User: " + searchedPurchase.getTheUser() + "\n"+
+                            "Payment Type: "+ searchedPurchase.getPaymentType() + "\n" +
+                            "Purchase Status: "+ searchedPurchase.getPurchaseStatus());
+            information.show();
+        }
+        else{
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Purchase not found!");
+            error.setContentText("The ID: " +id+ " It does not match any purchase on the list");
+            error.show();
+        }
+    }
+
+    @FXML
     private void backMenu(ActionEvent actionEvent) throws IOException {
         Button button = (Button) actionEvent.getSource();
 
@@ -1016,6 +1141,28 @@ public class AdminView {
             );
             error.showAndWait();
         }
+    }
+
+    @FXML
+    private void showUser(){
+        if(currentUser!=null){
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Info");
+            info.setHeaderText("Showing User: "+currentUser.getId());
+            info.setContentText(
+                    "ID: " +currentUser.getId() +"\n" +
+                            "Name: "+currentUser.getFullName() +"\n" +
+                            "Number: "+currentUser.getPhoneNumber() +"\n" +
+                            "Phone: "+currentUser.getPhoneNumber() +"\n" +
+                            "Purchase list: "+currentUser.getPurchaseList());
+        }
+        Alert error = new Alert(Alert.AlertType.ERROR);
+        error.setTitle("Error");
+        error.setHeaderText("User not found!");
+        error.setContentText(
+                "Make sure to specify a valid or existent User"
+        );
+        error.showAndWait();
     }
 
     @FXML

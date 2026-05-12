@@ -2,10 +2,7 @@ package co.edu.uniquindio.eventmanager;
 
 import co.edu.uniquindio.eventmanager.controller.AdminController;
 import co.edu.uniquindio.eventmanager.model.*;
-import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
-import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
-import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
-import co.edu.uniquindio.eventmanager.model.Enums.EventType;
+import co.edu.uniquindio.eventmanager.model.Enums.*;
 import co.edu.uniquindio.eventmanager.viewController.LoginView;
 import javafx.stage.Stage;
 
@@ -111,6 +108,8 @@ public class Application extends javafx.application.Application {
         Admin admin = new Admin("Jacobo","esau@gmail.com","6767","iwtkms");
         Proxy proxy = new Proxy(adminController,admin);
 
+        Purchase purchase = new Purchase(user, 100, "132",null, PaymentType.APPLE);
+        user.addPurchase(purchase);
         System.out.println(EventManager.getInstance().getEventList().size());
     }
 }

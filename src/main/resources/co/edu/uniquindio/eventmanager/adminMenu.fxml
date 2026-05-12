@@ -105,9 +105,24 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="User Menu">
+      <Tab text="Purchases Menu">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="purchaseMenu" editable="true" layoutX="165.0" layoutY="14.0" prefHeight="339.0" prefWidth="428.0">
+                     <columns>
+                        <TableColumn fx:id="purchaseID" prefWidth="105.0" resizable="false" sortable="false" text="Purchase ID" />
+                        <TableColumn fx:id="purchaseDate" prefWidth="142.0" resizable="false" sortable="false" text="Purchase Date" />
+                        <TableColumn fx:id="purchaseTotal" prefWidth="89.0" resizable="false" text="Total" />
+                        <TableColumn fx:id="purchaseStatus" prefWidth="94.0" resizable="false" text="Status" />
+                     </columns>
+                  </TableView>
+                  <ComboBox fx:id="purchaseTheUser" layoutX="6.0" layoutY="14.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" />
+                  <Button fx:id="backButton5" layoutX="16.0" layoutY="115.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="131.0" text="Back" />
+                  <Button fx:id="searchPurchaseButton" layoutX="89.0" layoutY="78.0" mnemonicParsing="false" text="Search" />
+                  <Button fx:id="showUserButton" layoutX="16.0" layoutY="78.0" mnemonicParsing="false" text="Get User" />
+                  <TextField fx:id="newPurchaseID" layoutX="4.0" layoutY="47.0" promptText="Purchase ID" />
+               </children></AnchorPane>
         </content>
       </Tab>
       <Tab text="Reportes">
