@@ -129,6 +129,11 @@ public class AdminController implements ServiceProxy {
         return PurchaseController.listPurchase();
     }
 
+    @Override
+    public boolean checkLoginAccess() {
+        return true;
+    }
+
     public void generatePDF() {
         try {
             PDDocument document = new PDDocument();
