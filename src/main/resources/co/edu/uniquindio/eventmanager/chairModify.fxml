@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.eventmanager.viewController.modifyView.ChairModify">
+   <Text fx:id="chairRow" layoutX="26.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Row: " wrappingWidth="182.13671875">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
+   <Text fx:id="chairNumber" layoutX="26.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number: " wrappingWidth="182.13671875">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
+   <Text fx:id="currentChair" layoutX="13.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Chair:" wrappingWidth="193.13671875">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
+   <Line fx:id="line2" endX="-27.0" endY="278.0" layoutX="239.0" layoutY="97.0" startX="-27.0" startY="-76.0" />
+   <Line fx:id="line1" endX="282.0" layoutX="110.0" layoutY="69.0" startX="-100.0" />
+   <Text fx:id="chairModified" layoutX="231.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chair Modified:" wrappingWidth="125.13671875">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
+   <TextField fx:id="newRow" layoutX="231.0" layoutY="74.0" promptText="Row" />
+   <TextField fx:id="newNumber" layoutX="231.0" layoutY="111.0" promptText="Number" />
+   <Button fx:id="modifyButton" layoutX="280.0" layoutY="187.0" mnemonicParsing="false" text="Modify" />
+   <Text fx:id="chairZone" layoutX="26.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Zone:" wrappingWidth="182.13671875">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
+   <Text fx:id="chairStatus" layoutX="26.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chair status:" wrappingWidth="182.13671875">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
+   <Label fx:id="chairShowZone" layoutX="72.0" layoutY="142.0" text="(...)">
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Label>
+   <ComboBox fx:id="newChairStatus" layoutX="232.0" layoutY="147.0" prefWidth="150.0" promptText="Chair Status" />
+</AnchorPane>

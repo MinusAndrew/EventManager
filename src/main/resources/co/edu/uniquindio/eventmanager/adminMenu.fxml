@@ -42,7 +42,7 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="placeMenu" editable="true" layoutX="174.0" layoutY="16.0" prefHeight="339.0" prefWidth="407.0">
+                  <TableView fx:id="placeMenu" editable="true" layoutX="186.0" layoutY="14.0" prefHeight="339.0" prefWidth="407.0">
                      <columns>
                         <TableColumn fx:id="placeID" prefWidth="122.0" resizable="false" sortable="false" text="Place ID" />
                         <TableColumn fx:id="placeName" prefWidth="158.0" resizable="false" sortable="false" text="Place Name" />
@@ -52,9 +52,9 @@
                   <TextField fx:id="newPlaceID" layoutX="13.0" layoutY="29.0" promptText="ID" />
                   <TextField fx:id="newPlaceName" layoutX="14.0" layoutY="63.0" promptText="Name" />
                   <TextField fx:id="newPlaceAddress" layoutX="14.0" layoutY="98.0" promptText="Address" />
-                  <Button fx:id="addPlaceButton" layoutX="22.0" layoutY="296.0" mnemonicParsing="false" text="Create" />
-                  <Button fx:id="searchPlaceButton" layoutX="88.0" layoutY="296.0" mnemonicParsing="false" text="ID Search" />
-                  <Button fx:id="backButton2" layoutX="22.0" layoutY="330.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="131.0" text="Back" />
+                  <Button fx:id="addPlaceButton" layoutX="21.0" layoutY="165.0" mnemonicParsing="false" text="Create" />
+                  <Button fx:id="searchPlaceButton" layoutX="87.0" layoutY="165.0" mnemonicParsing="false" text="ID Search" />
+                  <Button fx:id="backButton2" layoutX="21.0" layoutY="199.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="131.0" text="Back" />
                   <Button fx:id="placeZoneList" layoutX="15.0" layoutY="130.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="146.0" text="Place Zone List" />
                </children></AnchorPane>
       </content>
@@ -63,7 +63,7 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="zoneMenu" editable="true" layoutX="185.0" layoutY="14.0" prefHeight="339.0" prefWidth="407.0">
+                  <TableView fx:id="zoneMenu" editable="true" layoutX="186.0" layoutY="14.0" prefHeight="339.0" prefWidth="407.0">
                      <columns>
                         <TableColumn fx:id="zoneID" prefWidth="122.0" resizable="false" sortable="false" text="Zone ID" />
                         <TableColumn fx:id="zoneName" prefWidth="158.0" resizable="false" sortable="false" text="Zone Name" />
@@ -78,13 +78,31 @@
                   <Button fx:id="searchZoneButton" layoutX="89.0" layoutY="226.0" mnemonicParsing="false" text="ID Search" />
                   <Button fx:id="backButton3" layoutX="24.0" layoutY="263.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="131.0" text="Back" />
                   <Button fx:id="zoneChairList" layoutX="16.0" layoutY="189.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="146.0" text="Chair list" />
-                  <ComboBox fx:id="zoneThePlace" layoutX="14.0" layoutY="16.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" />
+                  <ComboBox fx:id="zoneThePlace" layoutX="14.0" layoutY="16.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" promptText="Select a Place" />
                </children></AnchorPane>
       </content>
     </Tab>
     <Tab text="Chair Menu">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="chairMenu" editable="true" layoutX="186.0" layoutY="14.0" prefHeight="339.0" prefWidth="407.0">
+                     <columns>
+                        <TableColumn fx:id="chairID" prefWidth="122.0" resizable="false" sortable="false" text="Chair ID" />
+                        <TableColumn fx:id="chairRow" prefWidth="158.0" resizable="false" sortable="false" text="Chair Row" />
+                        <TableColumn fx:id="chairNumber" prefWidth="133.0" resizable="false" text="Chair Number" />
+                     </columns>
+                  </TableView>
+                  <TextField fx:id="newChairID" layoutX="17.0" layoutY="81.0" promptText="ID" />
+                  <TextField fx:id="newChairRow" layoutX="17.0" layoutY="117.0" promptText="Row" />
+                  <TextField fx:id="newChairNumber" layoutX="17.0" layoutY="155.0" promptText="Number" />
+                  <Button fx:id="addChairButton" layoutX="25.0" layoutY="235.0" mnemonicParsing="false" text="Create" />
+                  <Button fx:id="searchChairButton" layoutX="91.0" layoutY="235.0" mnemonicParsing="false" text="ID Search" />
+                  <Button fx:id="backButton4" layoutX="26.0" layoutY="277.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="131.0" text="Back" />
+                  <ComboBox fx:id="chairTheZone" layoutX="17.0" layoutY="41.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" promptText="Select a Zone" />
+                  <ComboBox fx:id="newChairStatus" layoutX="16.0" layoutY="195.0" prefWidth="150.0" promptText="Chair Status" />
+                  <ComboBox fx:id="chairThePlace" layoutX="17.0" layoutY="7.0" maxHeight="25.0" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" promptText="Select a Place" />
+               </children></AnchorPane>
       </content>
     </Tab>
       <Tab text="User Menu">

@@ -2,10 +2,13 @@ package co.edu.uniquindio.eventmanager.viewController;
 
 import co.edu.uniquindio.eventmanager.Application;
 import co.edu.uniquindio.eventmanager.controller.AdminController;
+import co.edu.uniquindio.eventmanager.controller.ChairController;
 import co.edu.uniquindio.eventmanager.controller.ZoneController;
 import co.edu.uniquindio.eventmanager.model.*;
+import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
 import co.edu.uniquindio.eventmanager.model.Enums.EventType;
+import co.edu.uniquindio.eventmanager.viewController.modifyView.ChairModify;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.EventModify;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.PlaceModify;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.ZoneModify;
@@ -35,11 +38,15 @@ public class AdminView {
     @FXML
     private TextField newEventID, newEventName, newEventDescription, newEventCity, newEventTime,
                       newPlaceID, newPlaceName, newPlaceAddress,
-                      newZoneID, newZoneName, newZoneCapacity, newZonePrice;
+                      newZoneID, newZoneName, newZoneCapacity, newZonePrice,
+                      newChairID, newChairRow, newChairNumber;
 
 
     @FXML
-    private ComboBox<Place> newEventPlace, zoneThePlace;
+    private ComboBox<Place> newEventPlace, zoneThePlace, chairThePlace;
+
+    @FXML
+    private ComboBox<Composite> chairTheZone;
 
     @FXML
     private ComboBox<EventType>  newEventType;
@@ -48,10 +55,13 @@ public class AdminView {
     private ComboBox<EventPolicy> newEventPolicy;
 
     @FXML
+    private ComboBox<ChairStatus> newChairStatus;
+
+    @FXML
     private DatePicker newEventDate;
 
     @FXML
-    private TableView eventMenu, placeMenu, zoneMenu;
+    private TableView eventMenu, placeMenu, zoneMenu, chairMenu;
 
     @FXML
     private TableColumn<Event, String> eventID;
@@ -75,19 +85,29 @@ public class AdminView {
     private TableColumn<Zone, Integer> zoneCapacity;
 
     @FXML
+    private TableColumn<Chair, String> chairID;
+    @FXML
+    private TableColumn<Chair, Integer> chairRow;
+    @FXML
+    private TableColumn<Chair, Integer> chairNumber;
+
+    @FXML
     private Button addEventButton, searchEventButton, backButton,
                    placeZoneList, addPlaceButton, searchPlaceButton, backButton2,
-                   addZoneButton, searchZoneButton, zoneChairList, backButton3;
+                   addZoneButton, searchZoneButton, zoneChairList, backButton3,
+                   addChairButton, searchChairButton, backButton4;
+
 
     private AdminController adminController = new AdminController();
-
     private EventManager eventManager = EventManager.getInstance();
 
     private Place currentPlace;
+    private Zone currentZone;
 
     ObservableList<Event> observableEvents = FXCollections.observableArrayList(eventManager.getEventList());
     ObservableList<Place> observablePlaces = FXCollections.observableArrayList(eventManager.getPlaceList());
     ObservableList<Composite> observableZones = FXCollections.observableArrayList();
+    ObservableList<Chair> observableChairs = FXCollections.observableArrayList();
 
     @FXML
     private void initialize(){
@@ -97,17 +117,42 @@ public class AdminView {
             currentPlace = zoneThePlace.getValue();
 
             if (currentPlace != null) {
-
                 observableZones.setAll(currentPlace.getZoneList());
-
                 zoneMenu.setItems(observableZones);
             }
         });
 
+        chairThePlace.setOnAction(e -> {
+
+            currentPlace = chairThePlace.getValue();
+
+            if (currentPlace != null) {
+
+                observableZones.setAll(currentPlace.getZoneList()
+                );
+                chairTheZone.setItems(observableZones);
+                observableChairs.clear();
+            }
+        });
+
+        chairTheZone.setOnAction(e -> {
+            Composite selected =
+                    chairTheZone.getValue();
+
+            if (selected instanceof Zone) {
+                currentZone = (Zone) selected;
+                observableChairs.setAll(currentZone.getChairList());
+                chairMenu.setItems(observableChairs);
+            }
+        });
+
+
         newEventPlace.setItems(observablePlaces);
         newEventType.getItems().addAll(EventType.values());
         newEventPolicy.getItems().addAll(EventPolicy.values());
+        newChairStatus.getItems().addAll(ChairStatus.values());
         zoneThePlace.setItems(observablePlaces);
+        chairThePlace.setItems(observablePlaces);
 
         eventID.setCellValueFactory(new PropertyValueFactory<>("idEvent"));
         eventName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -121,13 +166,21 @@ public class AdminView {
         zoneName.setCellValueFactory(new PropertyValueFactory<>("name"));
         zoneCapacity.setCellValueFactory(new PropertyValueFactory<>("capacity"));
 
-        eventID.setReorderable(false);placeID.setReorderable(false);zoneID.setReorderable(false);
-        eventName.setReorderable(false);placeName.setReorderable(false);zoneName.setReorderable(false);
-        eventDate.setReorderable(false);placeAddress.setReorderable(false);zoneCapacity.setReorderable(false);
+        chairID.setCellValueFactory(new PropertyValueFactory<>("idChair"));
+        chairRow.setCellValueFactory(new PropertyValueFactory<>("row"));
+        chairNumber.setCellValueFactory(new PropertyValueFactory<>("number"));
+
+        //Format Preferences
+        {eventID.setReorderable(false);placeID.setReorderable(false);zoneID.setReorderable(false);chairID.setReorderable(false);
+        eventName.setReorderable(false);placeName.setReorderable(false);zoneName.setReorderable(false);chairRow.setReorderable(false);
+        eventDate.setReorderable(false);placeAddress.setReorderable(false);zoneCapacity.setReorderable(false);chairNumber.setReorderable(false);
 
         eventID.setStyle("-fx-alignment: CENTER;");placeID.setStyle("-fx-alignment: CENTER;");zoneID.setStyle("-fx-alignment: CENTER;");
+        chairID.setStyle("-fx-alignment: CENTER;");
         eventName.setStyle("-fx-alignment: CENTER;");placeName.setStyle("-fx-alignment: CENTER;");zoneName.setStyle("-fx-alignment: CENTER;");
+        chairRow.setStyle("-fx-alignment: CENTER;");
         eventDate.setStyle("-fx-alignment: CENTER;");placeAddress.setStyle("-fx-alignment: CENTER;");zoneCapacity.setStyle("-fx-alignment: CENTER;");
+        chairRow.setStyle("-fx-alignment: CENTER;");}
 
         eventMenu.setItems(observableEvents);
         eventMenu.setRowFactory(tv -> {
@@ -209,7 +262,7 @@ public class AdminView {
 
                 Alert information = new Alert(Alert.AlertType.INFORMATION);
                 information.setTitle("Information");
-                information.setHeaderText(event.getName());
+                information.setHeaderText("Reading Event: "+event.getName());
                 information.setContentText("Displaying event information: " + "\n" +
                             "ID: " + event.getIdEvent() + "\n" +
                             "Name: " + event.getName() + "\n" +
@@ -310,7 +363,7 @@ public class AdminView {
 
                 Alert information = new Alert(Alert.AlertType.INFORMATION);
                 information.setTitle("Information");
-                information.setHeaderText(place.getName());
+                information.setHeaderText("Reading Place: "+place.getName());
                 information.setContentText("Displaying place information: " + "\n" +
                         "ID: " + place.getIdPlace() + "\n" +
                         "Name: " + place.getName() + "\n" +
@@ -404,6 +457,27 @@ public class AdminView {
                 Alert information = new Alert(Alert.AlertType.INFORMATION);
 
                 information.setTitle("Information");
+                information.setHeaderText("Reading Zone: "+zone.getName());
+
+                information.setContentText(
+                        "Displaying zone information: " + "\n" +
+                                "ID: " + zone.getIdZone() + "\n" +
+                                "Name: " + zone.getName() + "\n" +
+                                "Capacity: " + zone.getCapacity() + "\n" +
+                                "Price: " + zone.getStartingPrice() + "\n" +
+                                "Chair list: " + zone.getChairList() + "\n"
+                );
+
+                information.show();
+            });
+
+            read.setOnAction(e -> {
+
+                Zone zone = row.getItem();
+
+                Alert information = new Alert(Alert.AlertType.INFORMATION);
+
+                information.setTitle("Information");
                 information.setHeaderText(zone.getName());
 
                 information.setContentText(
@@ -427,15 +501,112 @@ public class AdminView {
             return row;
         });
 
+        chairMenu.setRowFactory(tv ->{
+            TableRow<Chair> row = new TableRow<>();
+
+            ContextMenu menu = new ContextMenu();
+
+            MenuItem delete = new MenuItem("Delete");
+            MenuItem modify = new MenuItem("Modify");
+            MenuItem read = new MenuItem("Read");
+
+            delete.setOnAction(e -> {
+
+                Chair chair = row.getItem();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText("Chair Deletion");
+                alert.setContentText(
+                        "Are you sure you want to delete the chair:" + "\n" +
+                                "ID: " + chair.getIdChair() + "\n" +
+                                "Row: " + chair.getRow() + "\n" +
+                                "Number: " +chair.getNumber());
+
+                Optional<ButtonType> button = alert.showAndWait();
+
+                if (button.isPresent() && button.get() == ButtonType.OK) {
+
+                    if (currentZone != null) {
+
+                        ChairController.removeChair(chair, currentZone);
+                        observableChairs.remove(chair);
+
+                        Alert information = new Alert(Alert.AlertType.INFORMATION);
+                        information.setTitle("Information");
+                        information.setHeaderText("Successful!");
+                        information.setContentText(
+                                "The following chair has been removed:\n" +
+                                        "ID: " + chair.getIdChair() + "\n" +
+                                        "Row: " + chair.getRow() + "\n" +
+                                        "Number: " +chair.getNumber());
+                        information.show();
+                    }
+                }
+            });
+
+            modify.setOnAction(e -> {
+                Chair chair = row.getItem();
+
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("chairModify.fxml"));
+                    Parent root = fxmlLoader.load();
+                    ChairModify controller = fxmlLoader.getController();
+                    controller.setChair(chair);
+
+                    Stage stage = new Stage();
+                    stage.setResizable(false);
+                    stage.setTitle("Zone Modify");
+                    stage.setScene(new Scene(root));
+                    stage.showAndWait();
+
+                    observableChairs.setAll(currentZone.getChairList());
+                    eventMenu.refresh();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
+
+            read.setOnAction(e -> {
+
+                Chair chair = row.getItem();
+
+                Alert information = new Alert(Alert.AlertType.INFORMATION);
+
+                information.setTitle("Information");
+                information.setHeaderText("Reading Chair: "+chair.getIdChair());
+                information.setContentText(
+                        "Displaying chair information: " + "\n" +
+                                "ID: " + chair.getIdChair() + "\n" +
+                                "Row: " + chair.getRow() + "\n" +
+                                "Number: " + chair.getNumber() + "\n" +
+                                "Zone: " + chair.getTheZone() + "\n" +
+                                "Chair Status: " + chair.getChairStatus() + "\n");
+                information.show();
+            });
+
+            menu.getItems().addAll(delete, modify, read);
+            row.contextMenuProperty().bind(
+                    Bindings.when(row.emptyProperty())
+                            .then((ContextMenu) null)
+                            .otherwise(menu)
+            );
+            return row;
+        });
+
         addEventButton.setOnAction(e -> createEvent());
         addPlaceButton.setOnAction(e -> createPlace());
         addZoneButton.setOnAction(e-> createZone());
+        addChairButton.setOnAction(e-> createChair());
 
         searchEventButton.setOnAction(e -> searchEvent());
         searchPlaceButton.setOnAction(e -> searchPlace());
         searchZoneButton.setOnAction(e-> searchZone());
+        searchChairButton.setOnAction(e-> searchChair());
+
         placeZoneList.setOnAction(e-> showZoneList());
         zoneChairList.setOnAction(e-> showChairList());
+
 
         backButton.setOnAction(e-> {
             try {
@@ -452,6 +623,13 @@ public class AdminView {
             }
         });
         backButton3.setOnAction(e-> {
+            try {
+                backMenu(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        backButton4.setOnAction(e-> {
             try {
                 backMenu(e);
             } catch (IOException ex) {
@@ -625,6 +803,57 @@ public class AdminView {
     }
 
     @FXML
+    private void createChair(){
+        String id = newChairID.getText();
+        int row = Integer.parseInt(newChairRow.getText());
+        int number = Integer.parseInt(newChairNumber.getText());
+        ChairStatus status = newChairStatus.getValue();
+
+        Chair newChair = new Chair(id, row, number, status);
+        newChair.setTheZone(currentZone);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Chair Creation");
+        alert.setContentText("Are you sure you want to create the Chair:" + "\n" +
+                "ID: " + newChair.getIdChair() + "\n" +
+                "Row: " + newChair.getRow() + "\n" +
+                "Number: " + newChair.getNumber() + "\n" +
+                "Zone: " + newChair.getTheZone() + "\n" +
+                "Chair Status: " + newChair.getChairStatus());
+
+        Optional<ButtonType> button = alert.showAndWait();
+        if(button.isPresent() && button.get() == ButtonType.OK) {
+            boolean duplicated = false;
+
+            for(Chair c : currentZone.getChairList()){
+                if(c.getIdChair().equals(newChair.getIdChair())){
+                    duplicated = true;
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Chair ID already exists!");
+                    error.setContentText(
+                            "The ID: " + newChair.getIdChair() +
+                                    " is already assigned to another chair"
+                    );
+                    error.showAndWait();
+                    break;
+                }
+            }
+            if(!duplicated) {
+                ChairController.addChair(newChair, newChair.getTheZone());
+                Alert information = new Alert(Alert.AlertType.INFORMATION);
+                information.setTitle("Information");
+                information.setHeaderText("Succesfull!");
+                information.setContentText("Chair has been created correctly");
+                information.showAndWait();
+            }
+        }
+        observableChairs.setAll(currentZone.getChairList());
+        chairMenu.refresh();
+    }
+
+    @FXML
     private void searchEvent(){
         String id = newEventID.getText();
         Event eventSearched = adminController.searchEventById(id);
@@ -702,6 +931,32 @@ public class AdminView {
             error.setTitle("Error");
             error.setHeaderText("Zone not found!");
             error.setContentText("The ID: " +id+ " It does not match any zone on the place list");
+            error.show();
+        }
+    }
+
+    @FXML
+    private void searchChair(){
+        String id = newChairID.getText();
+        Chair searchedChair = ChairController.findChairById(id, currentZone);
+
+        if(searchedChair != null){
+            Alert information = new Alert(Alert.AlertType.INFORMATION);
+            information.setTitle("Information");
+            information.setHeaderText("Chair found!");
+            information.setContentText("Displaying chair information: " + "\n" +
+                    "ID: " + searchedChair.getIdChair() + "\n" +
+                    "Row: " + searchedChair.getRow() + "\n" +
+                    "Number: " + searchedChair.getNumber() + "\n" +
+                    "Zone: " + searchedChair.getTheZone() + "\n" +
+                    "Chair Status: " + searchedChair.getChairStatus());
+            information.show();
+        }
+        else{
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Chair not found!");
+            error.setContentText("The ID: " +id+ " It does not match any chair on the zone list");
             error.show();
         }
     }

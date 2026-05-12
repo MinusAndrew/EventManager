@@ -34,6 +34,7 @@ public class Application extends javafx.application.Application {
         Zone zone = new Zone("as","ma",5,200);
         Zone zone1 = new Zone("as2","ew",3,4400);
         Chair chair1 = new Chair("123",9,1, ChairStatus.AVAILABLE);
+        chair1.setTheZone(zone1);
         zone1.addChair(chair1);
 
         Place place = new Place("2132","asdsa","asdaw");
