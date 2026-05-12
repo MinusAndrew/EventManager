@@ -19,10 +19,9 @@ import javax.crypto.*;
 @Setter
 public class User implements Observer{
     private String id, fullName, email, phoneNumber, password;
-
     private ArrayList<Purchase> purchaseList;
-    private boolean rootAccess = false;
     private ArrayList<Purchase> cartList;
+    private boolean rootAccess = false;
 
     //All these variables are used to encrypt the password, thx.
     public static final KeyGenerator keygenerator;
@@ -132,7 +131,6 @@ public class User implements Observer{
                 ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", purchaseList=" + purchaseList +
                 '}';
     }
 

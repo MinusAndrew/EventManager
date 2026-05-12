@@ -1,5 +1,7 @@
 package co.edu.uniquindio.eventmanager.model;
 
+import co.edu.uniquindio.eventmanager.controller.AdminController;
+
 import java.util.ArrayList;
 
 
@@ -10,6 +12,21 @@ public class Proxy  implements ServiceProxy {
     public Proxy(AdminController admin, User user){
         this.realService = admin;
         this.rolUser = user;
+    }
+
+
+    public boolean checkLoginAccess(){
+            System.out.print("Verificando accesso.");
+            for (int i = 0; i <= 10; i++) {
+                System.out.print(".");
+            }
+            if (rolUser.isRootAccess()){
+                System.out.println("Acceso concedido");
+                return true;
+            } else {
+                System.out.println("No es admin");
+                return false;
+            }
     }
 
     public boolean checkAccess(){

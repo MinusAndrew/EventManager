@@ -51,7 +51,8 @@ public class LoginView {
             //
             switch (adminAcc){
                 case (0):
-                    FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("mainMenu.fxml"));
+                    //Change to mainMenu
+                    FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("adminMenu.fxml"));
                     Scene scene = new Scene(fxmlLoader.load());
                     stage.setResizable(false);
                     stage.setTitle("Main Menu");

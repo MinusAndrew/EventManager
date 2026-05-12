@@ -1,6 +1,6 @@
-package co.edu.uniquindio.eventmanager.model;
+package co.edu.uniquindio.eventmanager.controller;
 
-import co.edu.uniquindio.eventmanager.controller.*;
+import co.edu.uniquindio.eventmanager.model.*;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -9,12 +9,10 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class AdminController implements ServiceProxy{
+public class AdminController implements ServiceProxy {
 
 
     public AdminController(){}

@@ -16,8 +16,7 @@ import java.time.format.FormatStyle;
 
 @ToString
 @Getter
-@SetterProxy proxy = new Proxy(adminController,admin);
-        proxy.addPlace(place);
+@Setter
 public class Event {
     private String idEvent, name, description, city;
     private LocalDateTime date;
@@ -28,7 +27,7 @@ public class Event {
     private EventStatus eventStatus;
     private EventPolicy eventPolicy;
 
-    public Event(String idEvent, String name, String description, String city, LocalDateTime date, Place thePlace, EventType eventType, EventStatus eventStatus, EventPolicy eventPolicy) {
+    public Event(String idEvent, String name, String description, String city, LocalDateTime date, Place thePlace, EventType eventType, EventPolicy eventPolicy) {
         this.idEvent = idEvent;
         this.name = name;
         this.description = description;

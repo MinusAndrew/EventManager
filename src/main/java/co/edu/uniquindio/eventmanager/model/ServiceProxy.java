@@ -42,4 +42,5 @@ public interface ServiceProxy {
     Purchase searchPurchaseById(String id) ;
     void updatePurchase(Purchase purchase);
     ArrayList<Purchase> listPurchases();
+    boolean checkLoginAccess();
 }
