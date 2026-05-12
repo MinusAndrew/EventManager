@@ -57,7 +57,7 @@ public class ChairModify {
         int number = Integer.parseInt(newNumber.getText());
         ChairStatus status = newChairStatus.getValue();
 
-        Chair newChair = new Chair(id, row, number, status);
+        Chair newChair = new Chair(id, row, number, status, chair.getTheZone());
         newChair.setTheZone(chair.getTheZone());
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

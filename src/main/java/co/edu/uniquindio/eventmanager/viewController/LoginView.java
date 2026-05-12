@@ -1,8 +1,8 @@
 package co.edu.uniquindio.eventmanager.viewController;
 
 import co.edu.uniquindio.eventmanager.Application;
-import co.edu.uniquindio.eventmanager.model.EventManager;
-import co.edu.uniquindio.eventmanager.model.User;
+import co.edu.uniquindio.eventmanager.controller.AdminController;
+import co.edu.uniquindio.eventmanager.model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,24 +47,25 @@ public class LoginView {
         if (EventManager.getInstance().login(email, passwd)){
             Stage stage = new Stage();
             //temp var make proxy later
-            int adminAcc = 0;
+            AdminController adminController = new AdminController();
+            ServiceProxy proxy = new Proxy(adminController,EventManager.getInstance().getCurrentUser());
             //
-            switch (adminAcc){
-                case (0):
-                    FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("mainMenu.fxml"));
-                    Scene scene = new Scene(fxmlLoader.load());
-                    stage.setResizable(false);
-                    stage.setTitle("Main Menu");
-                    stage.setScene(scene);
-                    stage.show();
-                    break;
-                case (1):
-                    FXMLLoader fxmlLoader2 = new FXMLLoader(Application.class.getResource("adminMenu.fxml"));
-                    Scene scene2 = new Scene(fxmlLoader2.load());
-                    stage.setResizable(false);
-                    stage.setTitle("Admin Menu");
-                    stage.setScene(scene2);
-                    stage.show();
+            boolean b = proxy.checkLoginAccess();
+
+            if (!b) {//Change to mainMenu
+                FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("mainMenu.fxml"));
+                Scene scene = new Scene(fxmlLoader.load());
+                stage.setResizable(false);
+                stage.setTitle("Main Menu");
+                stage.setScene(scene);
+                stage.show();
+            } else if (b) {
+                FXMLLoader fxmlLoader2 = new FXMLLoader(Application.class.getResource("adminMenu.fxml"));
+                Scene scene2 = new Scene(fxmlLoader2.load());
+                stage.setResizable(false);
+                stage.setTitle("Admin Menu");
+                stage.setScene(scene2);
+                stage.show();
             }
             currentWindow.close();
         }

@@ -9,6 +9,13 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.PieChart?>
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.eventmanager.viewController.AdminView">
   <tabs>
@@ -127,7 +134,40 @@
       </Tab>
       <Tab text="Reportes">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          <ScrollPane fitToWidth="true" prefHeight="400.0" prefWidth="600.0">
+             <content>
+                <VBox alignment="CENTER" spacing="20.0" style="-fx-padding: 20;">
+                   <children>
+                      <LineChart fx:id="ventasPorPeriodoChart" title="Ventas por Periodo">
+                        <xAxis>
+                          <CategoryAxis side="BOTTOM" />
+                        </xAxis>
+                        <yAxis>
+                          <NumberAxis side="LEFT" />
+                        </yAxis>
+                      </LineChart>
+                      <BarChart fx:id="ocupacionPorZonaChart" title="Ocupación por Zona">
+                        <xAxis>
+                          <CategoryAxis side="BOTTOM" />
+                        </xAxis>
+                        <yAxis>
+                          <NumberAxis side="LEFT" />
+                        </yAxis>
+                      </BarChart>
+                      <PieChart fx:id="ingresosServiciosChart" title="Ingresos por Servicios Adicionales" />
+                      <PieChart fx:id="tasaCancelacionChart" title="Tasa de Cancelación de Eventos" />
+                      <BarChart fx:id="topEventosChart" title="Top Eventos (Tickets Vendidos)">
+                        <xAxis>
+                          <CategoryAxis side="BOTTOM" />
+                        </xAxis>
+                        <yAxis>
+                          <NumberAxis side="LEFT" />
+                        </yAxis>
+                      </BarChart>
+                   </children>
+                </VBox>
+             </content>
+          </ScrollPane>
         </content>
       </Tab>
   </tabs>

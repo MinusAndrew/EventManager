@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -61,14 +64,12 @@ public class EventManager {
         return null;
     }
 
-    public ArrayList<Event> getEventByFilter(String city, EventType type, EventStatus status){
-        ArrayList<Event> eventArrayList = new ArrayList<>();
-        for (Event event : EventManager.getInstance().getEventList()){
-            if (event.getCity().equalsIgnoreCase(city) && event.getEventType().equals(type) && event.getEventStatus().equals(status)){
-                eventArrayList.add(event);
-            }
-        }
-        return eventArrayList;
+    public ArrayList<Event> getEventByFilter(String city, EventType type, EventStatus status) {
+        return (ArrayList<Event>) EventManager.getInstance().getEventList().stream()
+                .filter(e -> city   == null || city.isBlank()  || e.getCity().equalsIgnoreCase(city))
+                .filter(e -> type   == null || e.getEventType()   == type)
+                .filter(e -> status == null || e.getEventStatus() == status)
+                .collect(Collectors.toList());
     }
   /*
 
