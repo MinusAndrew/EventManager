@@ -14,6 +14,21 @@ public class Proxy  implements ServiceProxy {
         this.rolUser = user;
     }
 
+
+    public boolean checkLoginAccess(){
+            System.out.print("Verificando accesso.");
+            for (int i = 0; i <= 10; i++) {
+                System.out.print(".");
+            }
+            if (rolUser.isRootAccess()){
+                System.out.println("Acceso concedido");
+                return true;
+            } else {
+                System.out.println("No es admin");
+                return false;
+            }
+    }
+
     public boolean checkAccess(){
         try {
             System.out.print("Verificando accesso.");
