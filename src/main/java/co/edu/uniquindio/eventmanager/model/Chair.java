@@ -13,7 +13,7 @@ public class Chair {
     private Zone theZone;
     private ChairStatus chairStatus;
 
-    public Chair(String idChair, int row, int number, ChairStatus chairStatus) {
+    public Chair(String idChair, int row, int number, ChairStatus chairStatus, Zone theZone) {
         this.idChair = idChair;
         this.row = row;
         this.number = number;

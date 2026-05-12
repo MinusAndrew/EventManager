@@ -30,15 +30,35 @@
                   <ChoiceBox fx:id="typeChoiceBox" layoutX="289.0" layoutY="310.0" prefWidth="150.0" />
                   <ChoiceBox fx:id="statusChoiceBox" layoutX="516.0" layoutY="310.0" prefWidth="150.0" />
                   <TextField fx:id="cityField" layoutX="71.0" layoutY="310.0" promptText="Pon tu ciudad aqui!" />
-                  <Button layoutX="231.0" layoutY="360.0" mnemonicParsing="false" onAction="#fillUpFilteredEventList" text="Buscar" />
+                  <Button layoutX="448.0" layoutY="360.0" mnemonicParsing="false" onAction="#fillUpFilteredEventList" text="Buscar" />
                   <Text layoutX="71.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ciudad" />
                   <Text layoutX="288.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipo" />
                   <Text layoutX="522.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estado" />
-                  <Button layoutX="444.0" layoutY="360.0" mnemonicParsing="false" onAction="#buyEventAction" text="Comprar" />
+                  <Button layoutX="223.0" layoutY="360.0" mnemonicParsing="false" onAction="#buyEventAction" text="Comprar" />
                   <Button layoutX="334.0" layoutY="360.0" mnemonicParsing="false" onAction="#checkEventDetailsAction" text="Detalles" />
                </children>
             </AnchorPane>
          </content>
+      </Tab>
+      <Tab closable="false" onSelectionChanged="#refreshCartAction" text="Carrito">
+          <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                      <TableView fx:id="cartTable" layoutX="62.0" layoutY="78.0" prefHeight="200.0" prefWidth="604.0">
+                          <columns>
+                              <TableColumn fx:id="cartEventColumn" prefWidth="150.0" text="Evento" />
+                              <TableColumn fx:id="cartTotalColumn" prefWidth="100.0" text="Total" />
+                              <TableColumn fx:id="cartPaymentColumn" prefWidth="150.0" text="Método Pago" />
+                              <TableColumn fx:id="cartTicketsColumn" prefWidth="100.0" text="Entradas" />
+                          </columns>
+                      </TableView>
+                      <Text layoutX="205.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tu Carrito de Compras" textAlignment="CENTER" wrappingWidth="316.54736328125" />
+                      <Button layoutX="100.0" layoutY="310.0" mnemonicParsing="false" onAction="#processCartAction" text="Procesar Compra" />
+                      <Button layoutX="330.0" layoutY="310.0" mnemonicParsing="false" onAction="#editCartAction" text="Modificar" />
+                      <Button layoutX="500.0" layoutY="310.0" mnemonicParsing="false" onAction="#deleteCartAction" text="Eliminar del Carrito" />
+                  </children>
+              </AnchorPane>
+          </content>
       </Tab>
       <Tab closable="false" onSelectionChanged="#refreshUserTabAction" text="User">
         <content>
@@ -68,26 +88,6 @@
                </children>
             </AnchorPane>
         </content>
-      </Tab>
-      <Tab closable="false" onSelectionChanged="#refreshCartAction" text="Carrito">
-          <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                  <children>
-                      <TableView fx:id="cartTable" layoutX="62.0" layoutY="78.0" prefHeight="200.0" prefWidth="604.0">
-                          <columns>
-                              <TableColumn fx:id="cartEventColumn" prefWidth="150.0" text="Evento" />
-                              <TableColumn fx:id="cartTotalColumn" prefWidth="100.0" text="Total" />
-                              <TableColumn fx:id="cartPaymentColumn" prefWidth="150.0" text="Método Pago" />
-                              <TableColumn fx:id="cartTicketsColumn" prefWidth="100.0" text="Entradas" />
-                          </columns>
-                      </TableView>
-                      <Text layoutX="205.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tu Carrito de Compras" textAlignment="CENTER" wrappingWidth="316.54736328125" />
-                      <Button layoutX="100.0" layoutY="310.0" mnemonicParsing="false" onAction="#processCartAction" text="Procesar Compra" />
-                      <Button layoutX="330.0" layoutY="310.0" mnemonicParsing="false" onAction="#editCartAction" text="Modificar" />
-                      <Button layoutX="500.0" layoutY="310.0" mnemonicParsing="false" onAction="#deleteCartAction" text="Eliminar del Carrito" />
-                  </children>
-              </AnchorPane>
-          </content>
       </Tab>
    </tabs>
 </TabPane>

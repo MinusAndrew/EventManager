@@ -6,10 +6,8 @@ import co.edu.uniquindio.eventmanager.controller.ChairController;
 import co.edu.uniquindio.eventmanager.controller.PurchaseController;
 import co.edu.uniquindio.eventmanager.controller.ZoneController;
 import co.edu.uniquindio.eventmanager.model.*;
-import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
-import co.edu.uniquindio.eventmanager.model.Enums.EventPolicy;
-import co.edu.uniquindio.eventmanager.model.Enums.EventType;
-import co.edu.uniquindio.eventmanager.model.Enums.PurchaseStatus;
+import co.edu.uniquindio.eventmanager.model.Enums.*;
+import co.edu.uniquindio.eventmanager.model.*;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.ChairModify;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.EventModify;
 import co.edu.uniquindio.eventmanager.viewController.modifyView.PlaceModify;
@@ -22,6 +20,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
@@ -33,6 +33,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class AdminView {
@@ -113,6 +115,17 @@ public class AdminView {
                    addChairButton, searchChairButton, backButton4,
                    showUserButton, searchPurchaseButton, backButton5;
 
+
+    @FXML
+    private javafx.scene.chart.LineChart<String, Number> ventasPorPeriodoChart;
+    @FXML
+    private javafx.scene.chart.BarChart<String, Number> ocupacionPorZonaChart;
+    @FXML
+    private javafx.scene.chart.PieChart ingresosServiciosChart;
+    @FXML
+    private javafx.scene.chart.PieChart tasaCancelacionChart;
+    @FXML
+    private javafx.scene.chart.BarChart<String, Number> topEventosChart;
 
     private AdminController adminController = new AdminController();
     private EventManager eventManager = EventManager.getInstance();
@@ -732,6 +745,96 @@ public class AdminView {
             }
         });
 
+        loadReportData();
+    }
+
+    private void loadReportData() {
+        // Ventas por periodo
+        XYChart.Series<String, Number> ventasSeries = new XYChart.Series<>();
+        ventasSeries.setName("Ventas");
+        Map<String, Double> ventasMap = new HashMap<>();
+        for (Purchase p : eventManager.getPurchaseList()) {
+            String month = p.getDateCreated().getMonth().toString();
+            ventasMap.put(month, ventasMap.getOrDefault(month, 0.0) + p.getTotal());
+        }
+        for (Map.Entry<String, Double> entry : ventasMap.entrySet()) {
+            ventasSeries.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+        }
+        ventasPorPeriodoChart.getData().add(ventasSeries);
+
+        // Ocupación por zona
+        XYChart.Series<String, Number> ocupacionSeries = new XYChart.Series<>();
+        ocupacionSeries.setName("Tickets Vendidos");
+        Map<String, Integer> ocupacionMap = new HashMap<>();
+        for (Purchase p : eventManager.getPurchaseList()) {
+            if (p.getTicketList() != null) {
+                for (Ticket t : p.getTicketList()) {
+                    if (t.getTheZone() != null) {
+                        String zoneName = t.getTheZone().getName();
+                        ocupacionMap.put(zoneName, ocupacionMap.getOrDefault(zoneName, 0) + 1);
+                    }
+                }
+            }
+        }
+        for (Map.Entry<String, Integer> entry : ocupacionMap.entrySet()) {
+            ocupacionSeries.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+        }
+        ocupacionPorZonaChart.getData().add(ocupacionSeries);
+
+        // Ingresos por servicios adicionales
+        java.util.Map<String, Double> ingresosMap = new java.util.HashMap<>();
+        for (Purchase p : eventManager.getPurchaseList()) {
+            if (p.getAdditionalServices() != null) {
+                for (String service : p.getAdditionalServices()) {
+                    double price = 0;
+                    if (service.contains("Preferencial")) price = 30000;
+                    else if (service.contains("Catering")) price = 50000;
+                    else if (service.contains("Merchandising")) price = 20000;
+                    else if (service.contains("Insurance")) price = 10000;
+                    else if (service.contains("Parking")) price = 15000;
+                    else price = 5000;
+
+                    ingresosMap.put(service, ingresosMap.getOrDefault(service, 0.0) + price);
+                }
+            }
+        }
+        ObservableList<PieChart.Data> ingresosData = FXCollections.observableArrayList();
+        for (Map.Entry<String, Double> entry : ingresosMap.entrySet()) {
+            ingresosData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+        }
+        ingresosServiciosChart.setData(ingresosData);
+
+        // Tasa de cancelación
+        int totalEvents = eventManager.getEventList().size();
+        int cancelledEvents = (int) eventManager.getEventList().stream().filter(ev -> ev.getEventStatus() == EventStatus.CANCELLED).count();
+        int activeEvents = totalEvents - cancelledEvents;
+
+        ObservableList<PieChart.Data> cancelacionData = FXCollections.observableArrayList(
+            new PieChart.Data("Activos", activeEvents),
+            new PieChart.Data("Cancelados", cancelledEvents)
+        );
+        tasaCancelacionChart.setData(cancelacionData);
+
+        // Top eventos
+        XYChart.Series<String, Number> topEventosSeries = new XYChart.Series<>();
+        topEventosSeries.setName("Tickets Vendidos");
+        java.util.Map<String, Integer> eventosMap = new java.util.HashMap<>();
+        for (Purchase p : eventManager.getPurchaseList()) {
+            if (p.getTicketList() != null) {
+                for (Ticket t : p.getTicketList()) {
+                    if (t.getTheEvent() != null) {
+                        String eventName = t.getTheEvent().getName();
+                        eventosMap.put(eventName, eventosMap.getOrDefault(eventName, 0) + 1);
+                    }
+                }
+            }
+        }
+        eventosMap.entrySet().stream()
+            .sorted(java.util.Map.Entry.<String, Integer>comparingByValue().reversed())
+            .limit(5)
+            .forEach(entry -> topEventosSeries.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue())));
+
+        topEventosChart.getData().add(topEventosSeries);
     }
 
     @FXML
@@ -904,7 +1007,7 @@ public class AdminView {
         int number = Integer.parseInt(newChairNumber.getText());
         ChairStatus status = newChairStatus.getValue();
 
-        Chair newChair = new Chair(id, row, number, status);
+        Chair newChair = new Chair(id, row, number, status, currentZone);
         newChair.setTheZone(currentZone);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
