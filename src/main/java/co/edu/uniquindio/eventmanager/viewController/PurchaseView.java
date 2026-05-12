@@ -186,6 +186,12 @@ public class PurchaseView implements Initializable {
             public double getTotal() { return baseTotal; }
             @Override
             public String getDescription() { return "Compra Base"; }
+
+            @Override
+            public ArrayList<Ticket> getTicketList() {
+                //check possible bug here
+                return null;
+            }
         };
         if (cateringCheck.isSelected()) component = new CateringDecorator(component);
         if (insuranceCheck.isSelected()) component = new InsuranceDecorator(component);

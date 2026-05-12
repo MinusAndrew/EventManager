@@ -8,9 +8,17 @@ import co.edu.uniquindio.eventmanager.model.UserPayments.PayPalPayment;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
 import javax.crypto.Cipher;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.crypto.*;
@@ -19,7 +27,6 @@ import javax.crypto.*;
 @Setter
 public class User implements Observer{
     private String id, fullName, email, phoneNumber, password;
-
     private ArrayList<Purchase> purchaseList;
     private ArrayList<Purchase> cartList;
     private boolean rootAccess = false;
@@ -141,38 +148,54 @@ public class User implements Observer{
     }
 
 
-    public String generateReceipt(){
-        //PurchaseList have a: ticketlist and have a:
-        // String idTicket, double finalCost, Event theEvent, Zone theZone, Chair theChair, TicketStatus ticketStatus
-        String receipt;
-        receipt =  "____________________________\n" +
-                    "     Reporte de compras \n"+
-                    "____________________________\n";
-        for(Purchase purchase : purchaseList){
-            receipt += "Compra N°: "+ purchase.getIdPurchase() + "\n Creada el: "+ purchase.getDateCreated() +
-                    "\n Se adquirieron los siguientes tiquetes: \n";
-            for(Ticket t : purchase.getTicketList()){
-                receipt += "Ticket N°: " + t.getIdTicket() + "\n Para el evento de " + t.getTheEvent().getName() +
-                        " en la zona " + t.getTheEvent().getThePlace() + "con la silla N°: " + t.getTheChair().getIdChair()
-                        + "" + "\n \n";
+    public void generateReceipt(){
+        try {
+            PDDocument document = new PDDocument();
+            PDPage page = new PDPage(PDRectangle.A4);
+            document.addPage(page);
+            PDPageContentStream content = new PDPageContentStream(document, page);
 
+            content.beginText();
+            content.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
+            content.newLineAtOffset(20, page.getMediaBox().getHeight() - 12);
+            content.showText("_______________________________");
+            content.newLineAtOffset(0, -20);
+            content.showText("               Reporte de compras");
+            content.newLineAtOffset(0, -10);
+            content.showText("_______________________________");
+            content.newLineAtOffset(0, -14);
+            for(Purchase purchase : purchaseList){
+                content.showText("Compra N°: " + purchase.getIdPurchase());
+                content.newLineAtOffset(0, -14);
+                content.showText("Creada el: " + purchase.getDateCreated().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
+                content.newLineAtOffset(0, -14);
+                content.showText("Se adquirieron los siguientes tiquetes:");
+                content.newLineAtOffset(0, -20);
+                for(Ticket t : purchase.getTicketList()){
+                    content.showText("-Ticket N°: " + t.getIdTicket());
+                    content.newLineAtOffset(0, -14);
+                    content.showText("Para el evento de " + t.getTheEvent().getName());
+                    content.newLineAtOffset(0, -14);
+                    content.showText("En la lugar ");
+                    content.showText(t.getTheEvent().getThePlace().getName());
+                    if(t.getTheChair() != null){
+                        content.showText(" con la silla N°: ");
+                        content.showText(t.getTheChair().getIdChair());
+                    }
+                    content.newLineAtOffset(0, -28);
+                }
+                content.showText(purchase.getDescription());
+                content.newLineAtOffset(0, -10);
+                content.showText("_______________________________");
+                content.newLineAtOffset(0, -28);
             }
-            receipt += "______________________________";
+            content.endText();
+            content.close();
+            document.save("src/main/resources/reporteUser.pdf");
 
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
-
-
-
-
-
-
-
-
-        ;
-
-
-
-        return receipt;
     }
 }

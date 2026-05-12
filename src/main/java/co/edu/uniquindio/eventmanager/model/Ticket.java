@@ -19,15 +19,5 @@ public class Ticket {
     private TicketStatus ticketStatus;
     private Purchase thePurchase;
 
-    /*
-
-
-    generateTicket();
-    checkByPurchase();
-    checkByEvent();
-    boolean validateTicket();
-
-
-     */
 
 }
