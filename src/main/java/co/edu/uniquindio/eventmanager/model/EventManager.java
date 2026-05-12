@@ -1,5 +1,6 @@
 package co.edu.uniquindio.eventmanager.model;
 
+import co.edu.uniquindio.eventmanager.controller.ZoneController;
 import co.edu.uniquindio.eventmanager.model.Enums.EventStatus;
 import co.edu.uniquindio.eventmanager.model.Enums.EventType;
 import lombok.Getter;
@@ -20,6 +21,9 @@ public class EventManager {
     private ArrayList<Purchase> purchaseList;
 
     private User currentUser;
+    private Event currentSelectedEvent;
+    private Purchase currentEditPurchase;
+
 
     private EventManager(String id, String name) {
         this.id = id;
@@ -66,6 +70,20 @@ public class EventManager {
         }
         return eventArrayList;
     }
+  /*
+
+    WARCRIME DO NOT REPLACE.
+    public boolean checkTheresChairList(){
+        for (Zone zone : ZoneController.listZones(currentSelectedEvent.getThePlace())){
+            if (zone.getChairList() == null){
+                return true;
+            }
+            break; // ninja
+        }
+        return false;
+    }
+
+   */
 
     public boolean addUser(User u){
         if (name.isBlank() || u.getEmail().isBlank() || u.getPhoneNumber().isBlank() || u.comparePasswords("") || !u.getEmail().matches("^[^@]+@[^@]+\\.[^@]+$")) {

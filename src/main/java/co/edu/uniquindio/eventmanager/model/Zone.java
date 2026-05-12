@@ -1,6 +1,7 @@
 package co.edu.uniquindio.eventmanager.model;
 
 import co.edu.uniquindio.eventmanager.model.Enums.ChairStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,20 +10,14 @@ import java.util.ArrayList;
 
 @Getter
 @Setter
+@Builder
 public class Zone implements Composite {
     private String idZone, name;
     private int capacity;
     private double startingPrice;
+    @ToString.Exclude @Builder.Default
+    private ArrayList<Chair> chairList = new ArrayList<>();
 
-    private ArrayList<Chair> chairList;
-
-    public Zone(String idZone, String name, int capacity, double startingPrice) {
-        this.idZone = idZone;
-        this.name = name;
-        this.capacity = capacity;
-        this.startingPrice = startingPrice;
-        this.chairList = new ArrayList<>();
-    }
 
     public void addChair(Chair chair) {
         chairList.add(chair);

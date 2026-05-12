@@ -10,7 +10,6 @@ import lombok.ToString;
 public class Chair {
     private String idChair;
     private int row, number;
-
     private Zone theZone;
     private ChairStatus chairStatus;
 
@@ -19,6 +18,7 @@ public class Chair {
         this.row = row;
         this.number = number;
         this.chairStatus = chairStatus;
+        this.theZone = theZone;
     }
 
     /*
