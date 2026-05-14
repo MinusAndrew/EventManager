@@ -149,7 +149,6 @@ public class User implements Observer{
         return message;
     }
 
-
     public void generateReceipt(){
         try {
             PDDocument document = new PDDocument();

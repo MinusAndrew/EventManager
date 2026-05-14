@@ -136,7 +136,7 @@ public class Application extends javafx.application.Application {
 
 
         // Add some more to make charts look nice
-        for(int i=0; i<5; i++){
+        for(int i=0; i<3; i++){
              ArrayList<Ticket> tl = new ArrayList<>();
              Ticket ticket = Ticket.builder().idTicket("TX"+i).finalCost(100).theEvent(event3).theZone(zone1).ticketStatus(TicketStatus.ACTIVE).build();
              tl.add(ticket);
@@ -149,7 +149,7 @@ public class Application extends javafx.application.Application {
         }
 
         AdminController adminController = new AdminController();
-        Admin admin = new Admin("Jacobo","esau@gmail.com","6767","iwtkms");
+        Admin admin = new Admin("Jacobo","admin@gmail.com","6767","admin");
         Proxy proxy = new Proxy(adminController,admin);
 
     //    Purchase purchase = new Purchase(user, 100, "132",null, PaymentType.APPLE);

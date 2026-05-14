@@ -164,14 +164,11 @@ public class AdminView {
         chairThePlace.setOnAction(e -> {
 
             currentPlace = chairThePlace.getValue();
-
-            if (currentPlace != null) {
-
-                observableZones.setAll(currentPlace.getZoneList()
-                );
-                chairTheZone.setItems(observableZones);
-                observableChairs.clear();
+            if(currentPlace!=null){
+                chairThePlace.setItems(observablePlaces);
+                System.out.print("Prueba taller final");
             }
+
         });
 
         chairTheZone.setOnAction(e -> {
@@ -1265,6 +1262,8 @@ public class AdminView {
                             "Number: "+currentUser.getPhoneNumber() +"\n" +
                             "Phone: "+currentUser.getPhoneNumber() +"\n" +
                             "Purchase list: "+currentUser.getPurchaseList());
+            info.showAndWait();
+            return;
         }
         Alert error = new Alert(Alert.AlertType.ERROR);
         error.setTitle("Error");
