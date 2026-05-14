@@ -189,6 +189,11 @@ public class MainView implements Initializable {
             errorAlert.showAndWait();
             return;
         }
+        if (selectedEvent.getEventStatus().equals(EventStatus.CANCELLED) || selectedEvent.getEventStatus().equals(EventStatus.DRAFT)) {
+            errorAlert.setContentText("Por favor, seleccione un evento valido.");
+            errorAlert.showAndWait();
+            return;
+        }
         EventManager.getInstance().setCurrentSelectedEvent(selectedEvent);
         switchMenu(event, "purchaseMenu.fxml");
     }

@@ -21,7 +21,6 @@ public class Event {
     private LocalDateTime date;
 
     private Place thePlace;
-
     private EventType eventType;
     private EventStatus eventStatus;
     private EventPolicy eventPolicy;
